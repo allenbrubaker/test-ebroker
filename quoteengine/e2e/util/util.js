@@ -1,6 +1,5 @@
-var setup = require('./setup.js');
 var settings = require('../../../protractor.conf.js');
-exports.baseUrl = settings.config.target;
+exports.baseUrl = settings.config.baseUrl;
 
 exports.title = function (match) {
     browser.getTitle().should.eventually.match(match);
@@ -16,7 +15,7 @@ exports.h1 = function (match) {
 
 exports.go = function (relativeUrl) {
     relativeUrl = (relativeUrl || '').trimStr('/');
-    browser.get(exports.baseUrl.trimStr('/') + '/' + relativeUrl);
+    browser.get(relativeUrl);
 };
 
 exports.click = function (selector) {

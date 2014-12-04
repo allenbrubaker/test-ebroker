@@ -1,75 +1,66 @@
 var util = require('./util/util.js');
+var controls = require('./util/controls.js');
+var home = controls.home;
+var quote = controls.quote;
 
-describe('landing', function () {
+describe('home:', function () {
     this.timeout(99999);
-
-    var zip = element(by.model('$root.zipcode'));
-    var counties = element(by.model('$root.county')).all(by.css('option'));
-    var selectedCounty = element(by.model('$root.county'));
-    var zipWithSingleCounty = '17402',
-        zipWithMultipleCounties = '17055';
-    var dob = element(by.model('dependent.dob'));
-    var addDependentBtn = element(by.css('a[ng-click ^= addDependent]'));
-    var quoteBtn = element(by.css('a[ng-click ^= toQuote]'));
-    var insuranceTypes = element.all(by.repeater('insurance in $root.insuranceTypes'));
-    var dependents = element.all(by.repeater('dependent in dependents'));
 
     beforeEach(function () {
         util.go();
-        zip.clear();
+        home.zip.clear();
     });
 
     it('entering zip code displays single county', function () {
-        zip.sendKeys(zipWithSingleCounty);
-        counties.count().should.eventually.equal(2); // First option is 'Select County'
-        //            counties.getAttibute('value').getText().should.eventually.match(/York/);
+        home.zip.sendKeys(home.zipWithSingleCounty);
+        home.counties.count().should.eventually.equal(2); // First option is 'Select County'
+        // home.counties.getAttibute('value').getText().should.eventually.match(/York/);
     })
 
     it('entering zip code displays multiple counties', function () {
-        zip.sendKeys(zipWithMultipleCounties);
-        counties.count().should.eventually.equal(3);
-        counties.get(1).getText().should.eventually.match(/Cumberland/);
-        counties.get(2).getText().should.eventually.match(/York/);
+        home.zip.sendKeys(home.zipWithMultipleCounties);
+        home.counties.count().should.eventually.equal(3);
+        home.counties.get(1).getText().should.eventually.match(/Cumberland/);
+        home.counties.get(2).getText().should.eventually.match(/York/);
     });
 
     it('with required fields returns medical quote', function () {
-        zip.sendKeys(zipWithMultipleCounties);
-        counties.get(1).click();
-        dependents.get(0).element(by.model('dependent.dob')).sendKeys('07/06/1986');
-        quoteBtn.click();
-        util.click('.modal-dialog [ng-click ^= cancel]')
+        home.zip.sendKeys(home.zipWithMultipleCounties);
+        home.counties.get(1).click();
+        home.dependents.get(0).element(by.model('dependent.dob')).sendKeys('07/06/1986');
+        home.quoteBtn.click();
     });
 
     it('with spouse and child dependency fields returns medical quote', function () {
-        zip.sendKeys(zipWithMultipleCounties);
-        counties.get(1).click();
-        dependents.get(0).element(by.model('dependent.dob')).sendKeys('07/06/1986');
+        home.zip.sendKeys(home.zipWithMultipleCounties);
+        home.counties.get(1).click();
+        home.dependents.get(0).element(by.model('dependent.dob')).sendKeys('07/06/1986');
 
-        insuranceTypes.get(1).click();
-        addDependentBtn.click();
-        dependents.get(1).all(by.css('[ng-options *= getRelationships] option')).get(1).click();
-        dependents.get(1).element(by.model('dependent.dob')).sendKeys('07/06/1986');
+        home.insuranceTypes.get(1).click();
+        home.addDependentBtn.click();
+        home.dependents.get(1).all(by.css('[ng-options *= getRelationships] option')).get(1).click();
+        home.dependents.get(1).element(by.model('dependent.dob')).sendKeys('07/06/1986');
 
-        addDependentBtn.click();
-        dependents.get(2).all(by.css('[ng-options *= getRelationships] option')).get(2).click();
-        dependents.get(2).element(by.model('dependent.dob')).sendKeys('07/06/1986');
+        home.addDependentBtn.click();
+        home.dependents.get(2).all(by.css('[ng-options *= getRelationships] option')).get(2).click();
+        home.dependents.get(2).element(by.model('dependent.dob')).sendKeys('07/06/1986');
 
-        quoteBtn.click();
+        home.quoteBtn.click();
     });
 
     it('allows addition and deletion of dependents', function () {
-        zip.sendKeys(zipWithMultipleCounties);
-        counties.get(1).click();
+        home.zip.sendKeys(home.zipWithMultipleCounties);
+        home.counties.get(1).click();
 
         for (var i = 0; i < 2; ++i) {
-            dependents.count().should.eventually.equal(i + 1);
-            addDependentBtn.click();
+            home.dependents.count().should.eventually.equal(i + 1);
+            home.addDependentBtn.click();
         }
         for (i = 2; i >= 0; --i) {
-            dependents.count().should.eventually.equal(i + 1);
-            dependents.get(i).element(by.css('[ng-click ^= removeDependent]')).click();
+            home.dependents.count().should.eventually.equal(i + 1);
+            home.dependents.get(i).element(by.css('[ng-click ^= removeDependent]')).click();
         }
-        dependents.count().should.eventually.equal(1);
+        home.dependents.count().should.eventually.equal(1);
     });
 
 });
