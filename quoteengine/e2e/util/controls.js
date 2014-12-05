@@ -2,8 +2,6 @@ exports.home = {
     zip: element(by.model('$root.zipcode')),
     counties: element(by.model('$root.county')).all(by.css('option')),
     selectedCounty: element(by.model('$root.county')),
-     zipWithSingleCounty: '17402',
-        zipWithMultipleCounties: '17055',
      dob: element(by.model('dependent.dob')),
      addDependentBtn: element(by.css('a[ng-click ^= addDependent]')),
      quoteBtn: element(by.css('a[ng-click ^= toQuote]')),

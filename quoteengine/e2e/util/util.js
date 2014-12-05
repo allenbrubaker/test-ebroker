@@ -30,6 +30,10 @@ String.prototype.trimStr = function(s) {
     return this.replace(new RegExp("^" + s + "+|" + s + "+$", "gm"), "");
 }
 
+String.prototype.trimCurrency = function() {
+    return Number(this.trimStr('\$'));
+}
+
 exports.url = function (relative) {
     relative= (relative || '').trimStr('/');
     browser.getCurrentUrl().should.eventually.equal(exports.baseUrl.trimStr('/') + '/' + relative);
@@ -50,5 +54,6 @@ exports.disabled = function(selector) {
 exports.enabled = function(selector) {
     $(selector).getAttribute('disabled').should.eventually.be.null;
 }
+
 
 
