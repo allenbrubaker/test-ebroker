@@ -31,7 +31,7 @@ String.prototype.trimStr = function(s) {
 }
 
 String.prototype.trimCurrency = function() {
-    return Number(this.trimStr('\$'));
+    return Number(this.replace('$', '').replace(',', ''));
 }
 
 exports.url = function (relative) {
