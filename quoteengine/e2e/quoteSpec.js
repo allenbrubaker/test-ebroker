@@ -4,7 +4,7 @@ var home = controls.home;
 var quote = controls.quote;
 var constants = require('./util/constants');
 
-describe.only('quote:', function () {
+describe('quote:', function () {
     this.timeout(99999);
     loadQuotePage();
 
