@@ -21,5 +21,6 @@ exports.quote = {
         maxDeductibleSliderThumb: $('[slider-model="filters.maxDeductible"] .grabber'),
         maxDeductibleSliderTrack: $('[slider-model="filters.maxDeductible"] > span'),
         carriersPane: $('.panel-primary-inner .fa-shopping-cart'),
-    }
+    },
+    plans: element.all(by.repeater('plan in plans'))
 }

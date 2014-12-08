@@ -31,6 +31,18 @@ describe('quote:', function () {
                     y: 0
                 }).perform();
                 sleep(4);
+
+                function premiumsAreAtMostMax() {
+                    element(by.binding('filters.maxPrice')).getText().then(function (x) {
+                        var maxPrice = x.trimCurrency();
+                        element.all(by.binding('plan.premium')).each(function (x) {
+                            x.getText().then(function (raw) {
+                                var premium = raw.trimCurrency();
+                                premium.should.be.at.most(maxPrice);
+                            })
+                        });
+                    });
+                }
             });
 
         });
@@ -54,14 +66,45 @@ describe('quote:', function () {
                     y: 0
                 }).perform();
                 sleep(4);
+
+                function deductiblesAreAtMostMax() {
+                    element(by.binding('filters.maxDeductible')).getText().then(function (x) {
+                        var maxPrice = x.trimCurrency();
+                        element.all(by.binding('plan.deductible')).each(function (x) {
+                            x.getText().then(function (raw) {
+                                var deductible = raw.trimCurrency();
+                                deductible.should.be.at.most(maxPrice);
+                            })
+                        });
+                    });
+                }
             });
         });
 
+        it.only('carriers filter functions correctly', function () {
+            quote.filters.carriersPane.click();
+
+            element.all(by.binding('carrier.name')).each(function (x) {
+                x.getText().then(function (t) {
+                    if (t.match(/healthamericaone/i))
+                        x.click();
+                });
+            });
+            sleep(5);
+            carrierNamesNotDisplaying('healthamericaone');
+
+            function carrierNamesNotDisplaying(logoName) {
+                var count = quote.plans.all(by.css('.quote-logo img[src*="' + logoName + '"]')).count();
+                count.should.eventually.equal(0);
+            }
+        })
     });
+
+
 
     function loadQuotePage() {
         browser.driver.manage().window().maximize(); // needed for sliders to function correctly.
-        util.go()
+        util.go();
         home.zip.sendKeys(constants.zipWithSingleCounty);
         home.dependents.get(0).element(by.model('dependent.dob')).sendKeys(constants.dob);
         home.quoteBtn.click();
@@ -70,31 +113,10 @@ describe('quote:', function () {
         sleep(4);
     };
 
-    function premiumsAreAtMostMax() {
-        element(by.binding('filters.maxPrice')).getText().then(function (x) {
-            var maxPrice = x.trimCurrency();
-            element.all(by.binding('plan.premium')).each(function (x) {
-                x.getText().then(function (raw) {
-                    var premium = raw.trimCurrency();
-                    premium.should.be.at.most(maxPrice);
-                })
-            });
-        });
-    }
-
-    function deductiblesAreAtMostMax() {
-        element(by.binding('filters.maxDeductible')).getText().then(function (x) {
-            var maxPrice = x.trimCurrency();
-            element.all(by.binding('plan.deductible')).each(function (x) {
-                x.getText().then(function (raw) {
-                    var deductible = raw.trimCurrency();
-                    deductible.should.be.at.most(maxPrice);
-                })
-            });
-        });
-    }
 
     function sleep(s) {
         browser.sleep(s * 1000);
     }
+
+
 });
