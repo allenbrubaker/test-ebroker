@@ -1,5 +1,6 @@
 (function () {
     var util = require('./util');
+    var constants = require('./constants')
     module.exports = Home;
 
     function Home() {
@@ -105,6 +106,15 @@
         }
     }
     
+    Home.login = function(zip) {
+        zip = zip || constants.zipWithMultipleCounties
+        var home = new Home();
+        home.enterZip(zip);
+        home.selectCounty();
+        home.addSelf(true, constants.dob, false);
+        home.quote();
+    }
+    
     function Dependent(control, relationship, isMale, dob, isTobaccoUse) {
         this.controls = new(function () {
             this.relations = control.all(by.css('[ng-options *= getRelationships] option'));
@@ -168,8 +178,5 @@
             this.controls.remove.click();
         }
     }
-
-
-
-
+    
 })();
