@@ -2,11 +2,10 @@ var util = require('./util/util');
 var controls = require('./util/controls');
 var home = controls.home;
 var quote = controls.quote;
-var constants = require('./util/constants');
 
 describe('quote:', function () {
     this.timeout(99999);
-    loadQuotePage();
+    //loadQuotePage();
 
     describe('filters:', function () {
 
@@ -81,7 +80,7 @@ describe('quote:', function () {
             });
         });
 
-        it.only('carriers filter functions correctly', function () {
+        it('carriers filter functions correctly', function () {
             quote.filters.carriersPane.click();
 
             element.all(by.binding('carrier.name')).each(function (x) {
@@ -105,14 +104,13 @@ describe('quote:', function () {
     function loadQuotePage() {
         browser.driver.manage().window().maximize(); // needed for sliders to function correctly.
         util.go();
-        home.zip.sendKeys(constants.zipWithSingleCounty);
-        home.dependents.get(0).element(by.model('dependent.dob')).sendKeys(constants.dob);
+        home.zip.sendKeys('17402');
+        home.dependents.get(0).element(by.model('dependent.dob')).sendKeys('07/06/1986');
         home.quoteBtn.click();
         quote.modalClose.click();
         browser.ignoreSynchronization = true;
         sleep(4);
     };
-
 
     function sleep(s) {
         browser.sleep(s * 1000);
