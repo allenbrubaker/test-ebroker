@@ -8,8 +8,8 @@
         var controls = {
             zip: element(by.model('$root.zipcode')),
             counties: element(by.model('$root.county')).all(by.css('option')),
-            addDependentBtn: element(by.css('a[ng-click ^= addDependent]')),
-            quoteBtn: element(by.css('a[ng-click ^= toQuote]')),
+            addDependent: element(by.css('a[ng-click ^= addDependent]')),
+            quote: element(by.css('a[ng-click ^= toQuote]')),
             dependents: element.all(by.repeater('dependent in dependents')),
         }
 
@@ -44,19 +44,23 @@
         }
 
         function countyControl(index) {
-            index = index || 0;
-            return controls.counties.get(Math.max(index - 1, 0))
+            index = Math.max(1, (index || 0) + 1); // first index is for 'Select County' initial option.
+            return controls.counties.get(index)
         }
 
         ///// Dependents //////
 
+        // call load only after zip/county has been selected so dependent controls are visible.
+        self.loadDependents = function() {
+            self.self = addDependent();
+        }
 
         self.dependents = [];
-
-        addDependent(); // add self by default.
-
-        self.self = self.dependents[0];
-
+        
+        self.addSelf = function(isMale, dob, isTobaccoUse) {
+            addDependent('You', isMale, dob, isTobaccoUse);
+        }
+        
         self.addSpouse = function (isMale, dob, isTobaccoUse) {
             addDependent('Spouse', isMale, dob, isTobaccoUse);
         }
@@ -66,6 +70,8 @@
         }
 
         self.removeDependent = function (index) {
+            if (index == null)
+                index = self.dependents.length - 1;
             if (index == 0)
                 return; // cannot remove self dependent.
             self.dependents[index].remove();
@@ -74,15 +80,18 @@
 
         self.assertDependentsCount = function (count) {
             controls.dependents.count().should.eventually.equal(count);
-            self.dependents.should.have.length.equal(count);
+            self.dependents.length.should.equal(count);
         }
 
         function addDependent(relationship, isMale, dob, isTobaccoUse) {
             if (self.dependents.length == 0)
                 relationship = 'You';
             else
-                controls.addDependentBtn.click();
-            self.dependents.push(new Dependent(dependentControl(self.dependents.length), relationship, isMale, dob, isTobaccoUse));
+                controls.addDependent.click();
+            var control = dependentControl(self.dependents.length);
+            var dependent = new Dependent(control, relationship, isMale, dob, isTobaccoUse);
+            self.dependents.push(dependent);
+            return dependent;
         }
 
         function dependentControl(index) {
@@ -92,71 +101,75 @@
 
         ////// Quote //////
         self.quote = function () {
-            controls.quoteBtn.click();
+            controls.quote.click();
         }
     }
-
+    
     function Dependent(control, relationship, isMale, dob, isTobaccoUse) {
-        this.controls = {
-            child: control.all(by.css('[ng-options *= getRelationships] option')).get(1),
-            spouse: control.all(by.css('[ng-options *= getRelationships] option')).get(2),
-            male: control.element(by.css('.fa-male')),
-            female: control.element(by.css('.fa-female')),
-            dob: control.element(by.model('dependent.dob')),
-            tobacco: control.element(by.css('.fa-check')),
-            noTobacco: control.element(by.css('.fa-ban')),
-            remove: control.element(by.css('.fa-times'))
-        }
+        this.controls = new(function () {
+            this.relations = control.all(by.css('[ng-options *= getRelationships] option'));
+            this.child = this.relations.get(1);
+            this.spouse = this.relations.get(2);
+            this.male = control.element(by.css('.fa-male'));
+            this.female = control.element(by.css('.fa-female'));
+            this.dob = control.element(by.model('dependent.dob'));
+            this.tobacco = control.element(by.css('.fa-check'));
+            this.noTobacco = control.element(by.css('.fa-ban'));
+            this.remove = control.element(by.css('.fa-times'));
+        });
 
         this.relationship = relationship;
         this.isMale = isMale == null ? true : isMale;
         this.dob = dob || '';
         this.isTobaccoUse = isTobaccoUse == null ? false : isTobaccoUse;
 
-        this.prototype = {
-            get relationship() {
-                return this._relationship;
-            },
-            set relationship(r) {
-                this._relationship = r;
-                this.controls.relations.count().should.eventually.be.above(0);
-                if (r.match(/child/i))
-                    this.controls.child.click();
-                else if (r.match(/spouse/i))
-                    this.controls.spouse.click();
-            },
-            get isMale() {
-                return this._isMale;
-            },
-            set isMale(m) {
-                this._isMale = m;
-                if (m)
-                    this.controls.male.click()
-                else
-                    this.controls.female.click();
-            },
-            get dob() {
-                return this._dob;
-            },
-            set dob(d) {
-                this._dob = d;
-                this.controls.dob.sendKeys(d);
-            },
-            get isTobaccoUse() {
-                return this._isTobaccoUse;
-            },
-            set isTobaccoUse(t) {
-                this._isTobaccoUse = t;
-                if (t)
-                    this.controls.tobacco.click();
-                else
-                    this.controls.noTobacco.click();
-            },
-            remove: function () {
-                this.controls.remove.click();
-            }
+    }
+
+    Dependent.prototype = {
+        get relationship() {
+            return this._relationship;
+        },
+        set relationship(r) {
+            this._relationship = r;
+            if (r.match(/child/i))
+                this.controls.child.click();
+            else if (r.match(/spouse/i))
+                this.controls.spouse.click();
+        },
+        get isMale() {
+            return this._isMale;
+        },
+        set isMale(m) {
+            this._isMale = m;
+            if (m)
+                this.controls.male.click()
+            else
+                this.controls.female.click();
+        },
+        get dob() {
+            return this._dob;
+        },
+        set dob(d) {
+            this._dob = d;
+            console.log(d);
+            this.controls.dob.sendKeys(d);
+        },
+        get isTobaccoUse() {
+            return this._isTobaccoUse;
+        },
+        set isTobaccoUse(t) {
+            this._isTobaccoUse = t;
+            if (t)
+                this.controls.tobacco.click();
+            else
+                this.controls.noTobacco.click();
+        },
+        remove: function () {
+            this.controls.remove.click();
         }
     }
+
+
 
 
 })();

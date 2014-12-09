@@ -1,13 +1,15 @@
 var Home = require('./util/Home');
 
-describe.only('home:', function () {
+describe('home:', function () {
     this.timeout(99999);
 
-    var home = new Home();
+    var home;
+    var dob = '07/06/1986';
     var zipWithSingleCounty = '17402';
     var zipWithMultipleCounties = '17055';
     
     beforeEach(function () {
+        home = new Home();
         home.load();
         home.clearZip();
     });
@@ -27,7 +29,7 @@ describe.only('home:', function () {
     it('with required fields returns medical quote', function () {
         home.enterZip(zipWithMultipleCounties);
         home.selectCounty();
-        home.self.dob = dob;
+        home.addSelf(true, dob, false);
         home.quote();
     });
 
@@ -35,14 +37,16 @@ describe.only('home:', function () {
         home.enterZip(zipWithMultipleCounties);
         home.selectCounty();
         
+        home.addSelf(true, dob, false);
         home.addSpouse(false, dob, true);
         home.addChild(true, dob, false);
         
         home.quote();
     });
     
-    it('allows addition and deletion of dependents', function () {
+    it.only('allows addition and deletion of dependents', function () {
         home.enterZip(zipWithSingleCounty);
+        home.addSelf();
         home.assertDependentsCount(1);
         home.addSpouse();
         home.assertDependentsCount(2);
