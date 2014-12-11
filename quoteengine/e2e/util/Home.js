@@ -14,9 +14,7 @@
         }
 
         self.load = function () {
-            console.log('loading home page');
             util.go();
-            console.log('loaded home page');
             self.clearZip();
         }
 
@@ -48,17 +46,17 @@
 
         function countyControl(index) {
             index = Math.max(1, (index || 0) + 1); // first index is for 'Select County' initial option.
-            return controls.counties.get(index)   
+            return controls.counties.get(index)
         }
 
         ///// Dependents //////
 
         self.dependents = [];
-        
+
         self.addSelf = function(isMale, dob, isTobaccoUse) {
             addDependent('You', isMale, dob, isTobaccoUse);
         }
-        
+
         self.addSpouse = function (isMale, dob, isTobaccoUse) {
             addDependent('Spouse', isMale, dob, isTobaccoUse);
         }
@@ -102,7 +100,7 @@
             controls.quote.click();
         }
     }
-    
+
     Home.login = function(zip) {
         zip = zip || '17012';
         var home = new Home();
@@ -111,7 +109,7 @@
         home.addSelf(true, '07/06/1986', false);
         home.quote();
     }
-    
+
     function Dependent(control, relationship, isMale, dob, isTobaccoUse) {
         this.controls = new(function () {
             this.relations = control.all(by.css('[ng-options *= getRelationships] option'));
@@ -174,5 +172,5 @@
             this.controls.remove.click();
         }
     }
-    
+
 })();

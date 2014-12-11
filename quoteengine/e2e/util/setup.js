@@ -1,6 +1,7 @@
 
 exports.load = function () {
     Promise = require('bluebird');
+
     Promise.promisifyAll(require('protractor'));
     var chai = require('chai');
     var chaiAsPromised = require('chai-as-promised');
@@ -13,5 +14,5 @@ exports.load = function () {
         'should',
         Object.getOwnPropertyDescriptor(Object.prototype, 'should')
     );
-    
+
 }

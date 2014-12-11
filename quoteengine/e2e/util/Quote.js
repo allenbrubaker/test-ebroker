@@ -13,8 +13,14 @@
             filter: $('[ng-controller = filterController')
         }
 
-        self.plans = null;
-        self.filter = null;
+        self.plans = function () {
+            var plans = controls.plans.map(function (control) {
+                return new Plan(control);
+            });
+            return Promise.resolve(plans);
+        }
+
+        self.filter = new Filter(controls.filter);
 
         self.load = function () {
             browser.driver.manage().window().maximize() // needed for sliders to function correctly.
@@ -22,8 +28,6 @@
             controls.modalClose.click();
             browser.ignoreSynchronization = true;
             browser.sleep(4000);
-            self.plans = Promise.resolve(Plan.getPlans(controls.plans)); // convert to bluebird promises.
-            self.filter = new Filter(controls.filter);
         };
 
         self.closeModal = function () {
@@ -32,28 +36,27 @@
 
         self.assertPremiumsAtMostFilter = function () {
             return self.filter.maxPremium().then(function (max) {
-                return self.plans.each(function (plan, index, count) {
-                    console.log(count);
+                return self.plans().each(function (plan) {
                     plan.premium().should.eventually.be.at.most(max);
                 })
             })
         }
 
-        self.assertDeductibleAtMostFilter = function () {
-            return self.filter.maxPremium().then(function (max) {
-                self.plans.each(function (plan) {
+        self.assertDeductiblesAtMostFilter = function () {
+            return self.filter.maxDeductible().then(function (max) {
+                self.plans().each(function (plan) {
                     plan.deductible().should.eventually.be.at.most(max);
                 })
             })
         }
 
         self.assertCarriersNotDisplayed = function (logoName) {
-            return self.plans
+            return self.plans()
                 .map(function (x) {
-                    return x.Carrier();
+                    return x.carrier();
                 })
                 .filter(function (x) {
-                    return x.toLowerCase().equal(logoName.toLowerCase());
+                    return x.toLowerCase() == logoName.toLowerCase();
                 })
                 .then(function (array) {
                     array.should.be.empty;
@@ -61,13 +64,6 @@
                 });
         }
     }
-
-    Plan.getPlans = function (plans) {
-        return plans.map(function (control) {
-            return new Plan(control);
-        });
-    }
-
 
     function Plan(control) {
         var self = this;
@@ -104,8 +100,8 @@
         };
 
         self.carrier = function () {
-            return controls.carrier.getCssValue('src').then(function (s) {
-                return s.match(/.*\/(.+)\.jpg/i)[0].replace('logo', '');
+            return controls.carrier.getAttribute('src').then(function (s) {
+                return s.match(/.*\/(.*)\.(jpg|gif|png)/i)[0].replace('logo', '');
             });
         };
 
@@ -130,10 +126,10 @@
             premium: control.element(by.binding('filters.maxPrice')),
             deductible: control.element(by.binding('filters.maxDeductible')),
             premiumSliderThumb: control.$('[slider-model="filters.maxPrice"] .grabber'),
-            premiumSliderTrack: control.$('[slider-model="filters.maxPrice"] > span'),
+            premiumSliderTrack: control.$('[slider-model="filters.maxPrice"]'),
             deductibleSliderThumb: control.$('[slider-model="filters.maxDeductible"] .grabber'),
-            deductibleSliderTrack: control.$('[slider-model="filters.maxDeductible"] > span'),
-            carriersPane: control.$('.panel-primary-inner .fa-shopping-cart.fa-caret-right'),
+            deductibleSliderTrack: control.$('[slider-model="filters.maxDeductible"]'),
+            carriersPane: control.$('.panel-primary-inner .fa-shopping-cart + .fa-caret-right'),
             carriers: control.all(by.binding('carrier.name'))
         }
 
@@ -163,7 +159,7 @@
                     }).click().perform();
                 })
                 .then(function () {
-                    return browser.sleep(10000); // wait for page to update.
+                    return browser.sleep(5000); // wait for page to update.
                 });
         }
 
@@ -174,16 +170,16 @@
             return controls.carriersPane.click();
         }
 
-        self.clickCarrierFilter = function (namePattern) {
-            return controls.carriers
-                .map(function (x) {
-                    return x.getText();
-                }).filter(function (x) {
-                    return x.match(namePattern);
+        self.clickCarrier = function (namePattern) {
+            return Promise.resolve(controls.carriers
+                .map(function (control) {
+                    return {control:control, carrier: control.getText()};
+                })).filter(function (x) {
+                    return x.carrier.match(namePattern);
                 }).spread(function (x) {
-                    return x.click();
+                    return x.control.click();
                 }).then(function () {
-                    return browser.sleep(5000);
+                    return browser.sleep(8000);
                 });
         }
 
@@ -199,7 +195,7 @@
             })
         };
 
-        Promise.prototype.browserSleep = function (s) {
+        protractor.promise.Promise.prototype.browserSleep = function (s) {
             return browser.sleep(s).return(this);
         }
 

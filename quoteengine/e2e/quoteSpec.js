@@ -22,23 +22,27 @@ describe('quote:', function () {
                     return quote.assertPremiumsAtMostFilter();
                 })
                 .then(function () {
-                    return quote.filter.movePremiumSlider(20);
-                }).then(function () {
-                    return browser.sleep(10000);
+                    return quote.filter.movePremiumSlider(20 * 1.1);
                 });
         });
 
         it('all plans shown contain deductibles at most max deductible', function () {
-            //quote.expandPriceFilter()
+//            quote.filter.expandPriceFilter()
             quote.filter.moveDeductibleSlider(-30)
-            quote.assertDeductiblesAtMostFilter();
-            quote.filter.moveDeductibleSlider(30);
+                .then(function () {
+                    return quote.assertDeductiblesAtMostFilter();
+                })
+                .then(function () {
+                    return quote.filter.moveDeductibleSlider(30 * 1.1);
+                });
         });
 
         it('carriers filter functions correctly', function () {
-            quote.filter.expandCarriersFilter();
-            quote.clickCarrierFilter(/healthamericaone/i);
-            quote.assertCarriersNotDisplayed('healthamericaone');
+            quote.filter.expandCarriersFilter().then(function () {
+                return quote.filter.clickCarrier(/healthamericaone/i);
+            }).then(function () {
+                return quote.assertCarriersNotDisplayed('healthamericaone');
+            });
         })
     });
 });
