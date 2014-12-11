@@ -1,24 +1,23 @@
 var Home = require('./util/Home');
-var constants = require('./util/constants');
 
-describe.only('home:', function () {
+describe('home:', function () {
     this.timeout(99999);
 
     var home;
+    var dob = '07/06/1986';
    
     beforeEach(function () {
         home = new Home();
         home.load();
-        home.clearZip();
     });
 
     it('entering zip code displays single county', function () {
-        home.enterZip(constants.zipWithSingleCounty);
+        home.enterZip('17012');
         home.assertCountyCount(1);
     })
 
     it('entering zip code displays multiple counties', function () {
-        home.enterZip(constants.zipWithMultipleCounties);
+        home.enterZip('17055');
         home.assertCountyCount(2);
         home.assertCountyName(0, /Cumberland/);
         home.assertCountyName(1, /York/);
@@ -29,12 +28,12 @@ describe.only('home:', function () {
     });
 
     it('with spouse and child dependency fields returns medical quote', function () {
-        home.enterZip(constants.zipWithMultipleCounties);
+        home.enterZip('17055');
         home.selectCounty();
         
-        home.addSelf(true, constants.dob, false);
-        home.addSpouse(false, constants.dob, true);
-        home.addChild(true, constants.dob, false);
+        home.addSelf(true, dob, false);
+        home.addSpouse(false, dob, true);
+        home.addChild(true, dob, false);
         
         home.quote();
     });

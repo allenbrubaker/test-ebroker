@@ -1,6 +1,5 @@
 (function () {
     var util = require('./util');
-    var constants = require('./constants')
     module.exports = Home;
 
     function Home() {
@@ -15,7 +14,10 @@
         }
 
         self.load = function () {
+            console.log('loading home page');
             util.go();
+            console.log('loaded home page');
+            self.clearZip();
         }
 
 
@@ -46,15 +48,10 @@
 
         function countyControl(index) {
             index = Math.max(1, (index || 0) + 1); // first index is for 'Select County' initial option.
-            return controls.counties.get(index)
+            return controls.counties.get(index)   
         }
 
         ///// Dependents //////
-
-        // call load only after zip/county has been selected so dependent controls are visible.
-        self.loadDependents = function() {
-            self.self = addDependent();
-        }
 
         self.dependents = [];
         
@@ -107,11 +104,11 @@
     }
     
     Home.login = function(zip) {
-        zip = zip || constants.zipWithMultipleCounties
+        zip = zip || '17012';
         var home = new Home();
+        home.load();
         home.enterZip(zip);
-        home.selectCounty();
-        home.addSelf(true, constants.dob, false);
+        home.addSelf(true, '07/06/1986', false);
         home.quote();
     }
     
@@ -161,7 +158,6 @@
         },
         set dob(d) {
             this._dob = d;
-            console.log(d);
             this.controls.dob.sendKeys(d);
         },
         get isTobaccoUse() {
