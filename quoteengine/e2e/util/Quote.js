@@ -10,7 +10,7 @@
         var controls = {
             modalClose: $('.modal-dialog [ng-click ^= cancel]'),
             plans: element.all(by.repeater('plan in plans')),
-            filter: $('[ng-controller = filterController')
+            filter: $('[ng-controller = filterController'),
         }
 
         self.plans = function () {
@@ -21,6 +21,8 @@
         }
 
         self.filter = new Filter(controls.filter);
+
+        self.sort = new Sort();
 
         self.load = function () {
             browser.driver.manage().window().maximize() // needed for sliders to function correctly.
@@ -65,14 +67,14 @@
                 });
             });
         }
-        
+
         self.allHsaEligible = function () {
             return self.allPlans(function (plan) {
                 return plan.isHsaEligible();
             });
         }
-        
-        
+
+
 
         self.allPlans = function (predicate) {
             return self.plans().reduce(function (acc, plan) {
@@ -92,6 +94,20 @@
             }, false)
         }
 
+
+        // direction: ascending: true, descending: false
+        self.isSorted = function (getValue, isAscending) {
+            return self.plans().reduce(function (acc, plan) {
+                return getValue(plan).then(function (p) {
+                    acc.passes = acc.passes && (isAscending ? acc.value <= p : acc.value >= p);
+                    acc.value = p;
+                    return acc;
+                });
+            }, {
+                passes: true,
+                value: isAscending ? -99999 : 99999
+            });
+        }
     }
 
     function Plan(control) {
@@ -123,9 +139,7 @@
         };
 
         self.isHsaEligible = function () {
-            //            return self.showMore().then(function () {
             return controls.hsaEligible.isPresent();
-            //            });
         };
 
         self.carrier = function () {
@@ -167,7 +181,13 @@
             planTypePane: control.$('.panel-primary-inner .fa-eye + .fa-caret-right'),
             showOnlyHsa: control.$('[ng-click ^= showHSA]'),
             metalTypePane: control.$('.panel-primary-inner .fa-shield + .fa-caret-right'),
-            metalTypes: control.all(by.binding('metal.name'))
+            metalTypes: control.all(by.binding('metal.name')),
+            sortButton: control.element(by.css('.btn-orange-sm.dropdown-toggle')),
+            sortPriceDesc: control.element(by.css('[ng-click *= premium][ng-click *= desc]')),
+            sortPriceAsc: control.element(by.css('[ng-click *= premium][ng-click *= asc]')),
+            sortDeductibleDesc: control.element(by.css('[ng-click *= deductible][ng-click *= desc]')),
+            sortDeductibleAsc: control.element(by.css('[ng-click *= deductible][ng-click *= asc]'))
+
         }
 
         ////// Premium ///////
@@ -265,6 +285,35 @@
             }).then(function () {
                 return browser.sleep(6000);
             });
+        }
+
+
+    }
+
+
+    function Sort(control) {
+        var self = this;
+
+        var controls = {
+            sortButton: $('.btn-orange-sm.dropdown-toggle'),
+            sortPriceDesc: $('[ng-click *= premium][ng-click *= desc]'),
+            sortPriceAsc: $('[ng-click *= premium][ng-click *= asc]'),
+            sortDeductibleDesc: $('[ng-click *= deductible][ng-click *= desc]'),
+            sortDeductibleAsc: $('[ng-click *= deductible][ng-click *= asc]')
+        }
+
+        self.sortPremium = function (isAscending) {
+            return controls.sortButton.click()
+                .then(function () {
+                    return isAscending ? controls.sortPriceAsc.click() : controls.sortPriceDesc.click();
+                }).sleep(3000);
+        }
+
+        self.sortDeductible = function (isAscending) {
+            return controls.sortButton.click()
+                .then(function () {
+                    return isAscending ? controls.sortDeductibleAsc.click() : controls.sortDeductibleDesc.click();
+                }).sleep(3000);
         }
 
     }

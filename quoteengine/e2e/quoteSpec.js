@@ -50,7 +50,7 @@ describe('quote:', function () {
                 .then(quote.filter.clickShowOnlyHsa)
                 .then(quote.allHsaEligible)
                 .then(function (allHsaEligible) {
-                    allHsaEligible.should.be.true
+                    allHsaEligible.should.be.true;
                 })
         });
 
@@ -65,4 +65,36 @@ describe('quote:', function () {
         });
 
     });
+
+    describe.only("sort:", function () {
+        it('displays premium in descending order', function () {
+            quote.sort.sortPremium(false).then(function () {
+                quote.isSorted(function (plan) {
+                    return plan.premium();
+                }, false).should.eventually.be.true;
+            })
+        })
+
+        it('displays premium in ascending order', function () {
+            quote.sort.sortPremium(true).then(function () {
+                quote.isSorted(function (plan) {
+                    return plan.premium();
+                }, true).should.eventually.be.true;
+            })
+        })
+        it('displays premium in descending order', function () {
+            quote.sort.sortDeductible(false).then(function () {
+                quote.isSorted(function (plan) {
+                    return plan.deductible();
+                }, false).should.eventually.be.true;
+            })
+        })
+        it('displays premium in ascending order', function () {
+            quote.sort.sortDeductible(true).then(function () {
+                quote.isSorted(function (plan) {
+                    return plan.deductible();
+                }, true).should.eventually.be.true;
+            })
+        })
+    })
 });
