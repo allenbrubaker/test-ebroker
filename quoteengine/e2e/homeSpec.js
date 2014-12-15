@@ -39,7 +39,7 @@ describe('home:', function () {
     });
     
     it('allows addition and deletion of dependents', function () {
-        home.enterZip(constants.zipWithSingleCounty);
+        home.enterZip('17012');
         home.addSelf();
         home.assertDependentsCount(1);
         home.addSpouse();

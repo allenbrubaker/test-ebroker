@@ -43,6 +43,8 @@ describe('quote:', function () {
             }).then(function () {
                 return quote.assertCarriersNotDisplayed('healthamericaone');
             });
-        })
+        });
+        
+        
     });
 });
