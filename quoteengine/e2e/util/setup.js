@@ -17,5 +17,5 @@ exports.load = function () {
     protractor.promise.Promise.prototype.sleep = function (ms) {
         return browser.sleep(ms);
     }
-
+    
 }

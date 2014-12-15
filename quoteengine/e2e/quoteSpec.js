@@ -45,7 +45,7 @@ describe('quote:', function () {
             });
         });
         
-        it('shows only HSA eligible on filter', function (done) {
+        it.only('shows only HSA eligible on filter', function (done) {
             quote.filter.expandPlanTypeFilter()
             .then(quote.filter.clickShowOnlyHsa)
             .then(quote.allHsaEligible)

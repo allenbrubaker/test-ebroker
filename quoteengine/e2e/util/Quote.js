@@ -51,27 +51,32 @@
         }
 
         self.assertCarriersNotDisplayed = function (logoName) {
-            return self.plans()
-                .map(function (x) {
-                    return x.carrier();
-                })
-                .filter(function (x) {
-                    return x.toLowerCase() == logoName.toLowerCase();
-                })
-                .then(function (array) {
-                    array.should.be.empty;
-                    return array;
-                });
+            return self.allPlans(function(plan) {
+                return plan.carrier().then(function(carrier) { carrier.toLowerCase() != logoName.toLowerCase(); });
+            });
         }
 
-        self.allHsaEligible = function () {
-
+        
+        self.allPlans = function(predicate) { 
             return self.plans().reduce(function (acc, plan) {
                 if (!acc) return false;
-                return plan.isHsaEligible().then(function (eligible) {
-                    return acc && eligible;
+                return predicate(plan).then(function (satisfies) {
+                    return acc && satisfies;
                 });
             }, true);
+        }
+        
+        self.somePlans = function(predicate) {
+            return self.plans().reduce(function (acc, plan) {
+                if (acc) return true;
+                return predicate(plan).then(function (satisfies) {
+                    return acc || satisfies;
+                }) 
+            }, false)
+        }
+        
+        self.allHsaEligible = function () {
+            return self.allPlans(function(plan) { return plan.isHsaEligible();});
         }
     }
 
