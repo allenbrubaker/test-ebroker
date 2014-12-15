@@ -1,4 +1,3 @@
-
 exports.load = function () {
     Promise = require('bluebird');
 
@@ -7,12 +6,16 @@ exports.load = function () {
     var chaiAsPromised = require('chai-as-promised');
     chai.use(chaiAsPromised);
     var should = chai.should();
-    var expect = chai.expect;
+    expect = chai.expect;
 
     Object.defineProperty(
         protractor.promise.Promise.prototype,
         'should',
         Object.getOwnPropertyDescriptor(Object.prototype, 'should')
     );
+
+    protractor.promise.Promise.prototype.sleep = function (ms) {
+        return browser.sleep(ms);
+    }
 
 }

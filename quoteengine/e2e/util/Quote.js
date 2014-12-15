@@ -63,6 +63,16 @@
                     return array;
                 });
         }
+
+        self.allHsaEligible = function () {
+
+            return self.plans().reduce(function (acc, plan) {
+                if (!acc) return false;
+                return plan.isHsaEligible().then(function (eligible) {
+                    return acc && eligible;
+                });
+            }, true);
+        }
     }
 
     function Plan(control) {
@@ -71,11 +81,12 @@
         var controls = {
             deductible: control.element(by.binding('plan.deductible')),
             premium: control.element(by.binding('plan.premium')),
-            hsaEligible: control.element(by.css('.fa-times.ng-hide[ng-show="plan.hsa_eligible"]')),
+            hsaEligible: control.element(by.css('[ng-show ^= "plan.hsa_eligible"] .fa-times.ng-hide')),
             carrier: control.element(by.css('.quote-logo img')),
             metalLevel: control.element(by.binding('plan.metal_level')),
             compare: control.element(by.css('.compare-tick')),
-            select: control.element(by.css('a[ui-sref ^= "quote.cart"]'))
+            select: control.element(by.css('a[ui-sref ^= "quote.cart"]')),
+            showMore: control.element(by.css('.fa-info-circle'))
         }
 
         self.deductible = function () {
@@ -93,10 +104,9 @@
         };
 
         self.isHsaEligible = function () {
-            return controls.hsaEligible
-                .count().then(function (x) {
-                    return x > 0;
-                });
+            //            return self.showMore().then(function () {
+            return controls.hsaEligible.isPresent();
+            //            });
         };
 
         self.carrier = function () {
@@ -116,6 +126,10 @@
         self.selectPlan = function () {
             return controls.select.click();
         }
+
+        self.showMore = function () {
+            return controls.showMore.click();
+        }
     }
 
     function Filter(control) {
@@ -130,7 +144,9 @@
             deductibleSliderThumb: control.$('[slider-model="filters.maxDeductible"] .grabber'),
             deductibleSliderTrack: control.$('[slider-model="filters.maxDeductible"]'),
             carriersPane: control.$('.panel-primary-inner .fa-shopping-cart + .fa-caret-right'),
-            carriers: control.all(by.binding('carrier.name'))
+            carriers: control.all(by.binding('carrier.name')),
+            planTypePane: control.$('.panel-primary-inner .fa-eye + .fa-caret-right'),
+            showOnlyHsa: control.$('[ng-click ^= showHSA]')
         }
 
         ////// Premium ///////
@@ -173,14 +189,17 @@
         self.clickCarrier = function (namePattern) {
             return Promise.resolve(controls.carriers
                 .map(function (control) {
-                    return {control:control, carrier: control.getText()};
+                    return {
+                        control: control,
+                        carrier: control.getText()
+                    };
                 })).filter(function (x) {
-                    return x.carrier.match(namePattern);
-                }).spread(function (x) {
-                    return x.control.click();
-                }).then(function () {
-                    return browser.sleep(8000);
-                });
+                return x.carrier.match(namePattern);
+            }).spread(function (x) {
+                return x.control.click();
+            }).then(function () {
+                return browser.sleep(8000);
+            });
         }
 
         self.maxPremium = function () {
@@ -195,8 +214,14 @@
             })
         };
 
-        protractor.promise.Promise.prototype.browserSleep = function (s) {
-            return browser.sleep(s).return(this);
+        ////////// Plan Type ///////////
+
+        self.expandPlanTypeFilter = function () {
+            return controls.planTypePane.click();
+        }
+
+        self.clickShowOnlyHsa = function () {
+            return controls.showOnlyHsa.click().sleep(4000);
         }
 
     }

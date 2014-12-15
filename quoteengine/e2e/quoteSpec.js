@@ -27,7 +27,7 @@ describe('quote:', function () {
         });
 
         it('all plans shown contain deductibles at most max deductible', function () {
-//            quote.filter.expandPriceFilter()
+            //            quote.filter.expandPriceFilter()
             quote.filter.moveDeductibleSlider(-30)
                 .then(function () {
                     return quote.assertDeductiblesAtMostFilter();
@@ -45,6 +45,11 @@ describe('quote:', function () {
             });
         });
         
-        
+        it('shows only HSA eligible on filter', function (done) {
+            quote.filter.expandPlanTypeFilter()
+            .then(quote.filter.clickShowOnlyHsa)
+            .then(quote.allHsaEligible)
+            .then(function(allHsaEligible) { allHsaEligible.should.be.true } )
+        });
     });
 });
