@@ -50,14 +50,31 @@
             })
         }
 
-        self.assertCarriersNotDisplayed = function (logoName) {
-            return self.allPlans(function(plan) {
-                return plan.carrier().then(function(carrier) { carrier.toLowerCase() != logoName.toLowerCase(); });
+        self.allCarriersNotDisplaying = function (logoName) {
+            return self.allPlans(function (plan) {
+                return plan.carrier().then(function (carrier) {
+                    return carrier.toLowerCase() != logoName.toLowerCase();
+                });
             });
         }
 
+        self.allMetalTypesNotDisplaying = function (metalType) {
+            return self.allPlans(function (plan) {
+                return plan.metal().then(function (x) {
+                    return x.toLowerCase() != metalType.toLowerCase();
+                });
+            });
+        }
         
-        self.allPlans = function(predicate) { 
+        self.allHsaEligible = function () {
+            return self.allPlans(function (plan) {
+                return plan.isHsaEligible();
+            });
+        }
+        
+        
+
+        self.allPlans = function (predicate) {
             return self.plans().reduce(function (acc, plan) {
                 if (!acc) return false;
                 return predicate(plan).then(function (satisfies) {
@@ -65,19 +82,16 @@
                 });
             }, true);
         }
-        
-        self.somePlans = function(predicate) {
+
+        self.somePlans = function (predicate) {
             return self.plans().reduce(function (acc, plan) {
                 if (acc) return true;
                 return predicate(plan).then(function (satisfies) {
                     return acc || satisfies;
-                }) 
+                })
             }, false)
         }
-        
-        self.allHsaEligible = function () {
-            return self.allPlans(function(plan) { return plan.isHsaEligible();});
-        }
+
     }
 
     function Plan(control) {
@@ -120,7 +134,7 @@
             });
         };
 
-        self.metalLevel = function () {
+        self.metal = function () {
             return controls.metalLevel.getText();
         };
 
@@ -151,7 +165,9 @@
             carriersPane: control.$('.panel-primary-inner .fa-shopping-cart + .fa-caret-right'),
             carriers: control.all(by.binding('carrier.name')),
             planTypePane: control.$('.panel-primary-inner .fa-eye + .fa-caret-right'),
-            showOnlyHsa: control.$('[ng-click ^= showHSA]')
+            showOnlyHsa: control.$('[ng-click ^= showHSA]'),
+            metalTypePane: control.$('.panel-primary-inner .fa-shield + .fa-caret-right'),
+            metalTypes: control.all(by.binding('metal.name'))
         }
 
         ////// Premium ///////
@@ -187,7 +203,7 @@
 
         //////// Carriers /////////
 
-        self.expandCarriersFilter = function () {
+        self.expandCarrierFilter = function () {
             return controls.carriersPane.click();
         }
 
@@ -227,6 +243,28 @@
 
         self.clickShowOnlyHsa = function () {
             return controls.showOnlyHsa.click().sleep(4000);
+        }
+
+        /////////// Metal Type //////////
+
+        self.expandMetalTypeFilter = function () {
+            return controls.metalTypePane.click();
+        }
+
+        self.clickMetalType = function (namePattern) {
+            return Promise.resolve(controls.metalTypes
+                .map(function (control) {
+                    return {
+                        control: control,
+                        metalType: control.getText()
+                    };
+                })).filter(function (x) {
+                return x.metalType.match(namePattern);
+            }).spread(function (x) {
+                return x.control.click();
+            }).then(function () {
+                return browser.sleep(6000);
+            });
         }
 
     }

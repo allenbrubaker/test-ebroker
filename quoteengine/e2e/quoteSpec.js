@@ -38,18 +38,31 @@ describe('quote:', function () {
         });
 
         it('carriers filter functions correctly', function () {
-            quote.filter.expandCarriersFilter().then(function () {
+            quote.filter.expandCarrierFilter().then(function () {
                 return quote.filter.clickCarrier(/healthamericaone/i);
             }).then(function () {
-                return quote.assertCarriersNotDisplayed('healthamericaone');
+                quote.allCarriersNotDisplaying('healthamericaone').should.eventually.be.true;
             });
         });
-        
-        it.only('shows only HSA eligible on filter', function (done) {
+
+        it('shows only HSA eligible on filter', function (done) {
             quote.filter.expandPlanTypeFilter()
-            .then(quote.filter.clickShowOnlyHsa)
-            .then(quote.allHsaEligible)
-            .then(function(allHsaEligible) { allHsaEligible.should.be.true } )
+                .then(quote.filter.clickShowOnlyHsa)
+                .then(quote.allHsaEligible)
+                .then(function (allHsaEligible) {
+                    allHsaEligible.should.be.true
+                })
         });
+
+        it('metalType filter functions correctly', function () {
+            quote.filter.expandMetalTypeFilter().then(function () {
+                return quote.filter.clickMetalType(/bronze/i);
+            }).then(function () {
+                return quote.allMetalTypesNotDisplaying('bronze');
+            }).then(function (notDisplaying) {
+                notDisplaying.should.be.true;
+            });
+        });
+
     });
 });
