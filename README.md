@@ -50,3 +50,70 @@ Quote Engine Basic Acceptance Tests
 
 - [ ] TestUserRegistration - Verify that a user is able to select a plan and then register on Agency Central as a new user
 
+Quote Engine Tests:
+Plan Page
+- [ ] Plans display
+- [ ] Ability to compare up to 8 plans
+- [ ] Ability to select plan info button
+- [ ] Ability to select More info button
+- [ ] Ability to Sort plans
+- [ ] Ability to Find out Now for Tax Credit
+- [ ] Ability to Edit dependants
+- [ ] Ability to Set the location & Edit
+Filters
+	- [ ] Price
+	- [ ] Carriers
+	- [ ] Plan Type
+	- [ ] Metal Type
+- [ ] Insurance Type check boxes
+- [ ] Click on Disclaimer
+- [ ] Click on Metal Levels Info
+
+Application Tests:
+Applications Tab
+	- [ ] Verify display of record
+	- [ ] Select Plans button for record, verify contents
+	- [ ] Select Effective Dates button for record, verify contents
+	- [ ] Continue Button -> Takes user to application setup flow
+	- [ ] Cancel Application Button -> Confirm ability to cancel application
+Comparisons Tab	
+	- [ ] Verify display of record
+	- [ ] Select Plans button for record, verify contents
+	- [ ] Select View Current Comparison button, verify contents
+	- [ ] Delete Comparison
+Quotes
+	- [ ] Verify Display of Record
+	- [ ] Verify Plans button for record, verify contents
+	- [ ] Verify Dependants button for record, verify contents
+	- [ ] Verify Buy Now button
+	- [ ] Verify ability to delete Quote
+
+- [ ] Verify Back to Quotes button -> takes user back to quote engine
+- [ ] Verify Logout button
+- [ ] Verify Filter application works
+Application	
+	- [ ] Verify ability to navigate the application by clicking on the different sections at top (Demographics,Dependants,Carrier Info, etc)
+	- [ ] Verify Demographics tab, entering data
+	- [ ] Verify adding/removing Dependants & view existing dependants
+	- [ ] Verify Carrier Info tab -> 	yes/no question
+	- [ ] Verify effective date
+	- [ ] Verify payment
+	- [ ] Verify Check Out
+- [ ] Verify Application Options at top (dropdown)
+
+Scenario Tests:
+
+- [ ] As a user, I'd like to be able to receive a quote for Medical Insurance for myself, my husband and 10 year old dependent. I'd like to be able to save that quote for later viewing.
+
+- [ ] As a user I'd like to compare quotes for 3 different medical plans for myself and my husband. I'd like to save that comparison for later viewing. 
+
+- [ ] Get a quote and choose to checkout. Using existing account to log in on testapplication, verfiy that when the Demographics section shows, the first name, last name and date of birth are prefilled.
+
+- [ ] Verify that from the shopping cart in Quote Engine, a user is able to click the back button that is shown above the plan information and is taken back the the plans page.
+
+- [ ] Verify that after saving a comparison the Back to Quotes button shows and is able to be click and return the user to the quote engine
+
+- [ ] Verify that the Instant Quote button is not enabled until after the Date of Birth field is filled in
+
+- [ ] Verify that a user is able to use the Cancel button from the select agent page after getting a quote, and selecting Save Quote
+
