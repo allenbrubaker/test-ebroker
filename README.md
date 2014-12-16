@@ -27,10 +27,10 @@ npm test
 Quote Engine Basic Acceptance Tests
 ======================================
 
-- [ ] TestHealthInsuranceQuote - Verify that Health Insurance plans show when entering zipcode & dependent information
+- [x] TestHealthInsuranceQuote - Verify that Health Insurance plans show when entering zipcode & dependent information
 
 
-- [ ] TestPlanInfo - Verify that a user is able to enter a zip, get an instant quote and click the Plan Info button that will display information for that plan
+- [x] TestPlanInfo - Verify that a user is able to enter a zip, get an instant quote and click the Plan Info button that will display information for that plan
 
 
 - [ ] TestTaxCreditQualification - Verify that a user is able to click the Qualify for Tex Credit button, enter data, receive tax credit information and that information displays within the plan information area
