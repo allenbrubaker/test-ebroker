@@ -115,7 +115,7 @@
             return controls.comparePlans.click().sleep(4000);
         }
         
-        self.comparePage = function() { return new Compare(element); }
+        self.comparePage = function() { return new Compare(); }
     }
 
     function Plan(control) {

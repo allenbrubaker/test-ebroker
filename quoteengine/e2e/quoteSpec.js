@@ -98,7 +98,7 @@ describe('quote:', function () {
         })
     })
 
-    describe('basic:', function () {
+    describe.only('basic:', function () {
 
 
         it('clicking plan info shows plan detail modal with correct data', function () {
@@ -108,7 +108,7 @@ describe('quote:', function () {
                 return plan.showPlanInfo()
                     .then(function () {
                         return plan.planInfo.containsPlan(name, premium).should.eventually.be.true;
-                    })
+                    }).then(plan.planInfo.clickClose);
             })
         });
 
@@ -132,7 +132,7 @@ describe('quote:', function () {
                                         });
                                 }, true).should.eventually.equal(true);
                             });
-                    })
+                    }).then(quote.comparePage().clickBack);
                 });
         });
     })

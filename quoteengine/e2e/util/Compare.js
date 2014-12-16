@@ -3,11 +3,14 @@
     module.exports = Compare;
     
     function Compare(control) {
+        control = control || $('[ui-view=quoteEngine]');
         var self = this;
 
         var controls = {
             names: control.all(by.binding('plan.display_name')),
-            premiums: control.all(by.binding('plan.premium'))
+            premiums: control.all(by.binding('plan.premium')),
+            back: control.$('[ng-click^=goToQuote]'),
+            close: control.$('[ng-click^=ok]')
         }
 
         self.premiums = function () {
@@ -30,5 +33,9 @@
             return Promise.all([self.names(), self.premiums()])
             .spread(function(names, premiums) { return names.indexOf(name) != -1 && premiums.indexOf(premium) != -1; });
         };
+        
+        self.clickBack = function () { controls.back.click(); };
+        
+        self.clickClose = function () { controls.close.click(); };
     };
 })();
