@@ -106,7 +106,7 @@
             }, {
                 passes: true,
                 value: isAscending ? -99999 : 99999
-            });
+            }).then(function(acc) { return acc.passes; });
         }
     }
 
@@ -306,14 +306,14 @@
             return controls.sortButton.click()
                 .then(function () {
                     return isAscending ? controls.sortPriceAsc.click() : controls.sortPriceDesc.click();
-                }).sleep(3000);
+                }).sleep(4000);
         }
 
         self.sortDeductible = function (isAscending) {
             return controls.sortButton.click()
                 .then(function () {
                     return isAscending ? controls.sortDeductibleAsc.click() : controls.sortDeductibleDesc.click();
-                }).sleep(3000);
+                }).sleep(4000);
         }
 
     }

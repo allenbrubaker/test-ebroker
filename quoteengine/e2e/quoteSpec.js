@@ -69,7 +69,7 @@ describe('quote:', function () {
     describe.only("sort:", function () {
         it('displays premium in descending order', function () {
             quote.sort.sortPremium(false).then(function () {
-                quote.isSorted(function (plan) {
+                return quote.isSorted(function (plan) {
                     return plan.premium();
                 }, false).should.eventually.be.true;
             })
@@ -77,24 +77,24 @@ describe('quote:', function () {
 
         it('displays premium in ascending order', function () {
             quote.sort.sortPremium(true).then(function () {
-                quote.isSorted(function (plan) {
+                return quote.isSorted(function (plan) {
                     return plan.premium();
                 }, true).should.eventually.be.true;
             })
         })
-        it('displays premium in descending order', function () {
+        it('displays deductible in descending order', function () {
             quote.sort.sortDeductible(false).then(function () {
-                quote.isSorted(function (plan) {
+                return quote.isSorted(function (plan) {
                     return plan.deductible();
                 }, false).should.eventually.be.true;
             })
         })
-        it('displays premium in ascending order', function () {
+        it('displays deductible in ascending order', function () {
             quote.sort.sortDeductible(true).then(function () {
-                quote.isSorted(function (plan) {
+                return quote.isSorted(function (plan) {
                     return plan.deductible();
                 }, true).should.eventually.be.true;
-            })
+            })  
         })
     })
 });
