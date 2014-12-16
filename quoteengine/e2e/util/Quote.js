@@ -1,7 +1,8 @@
 (function () {
 
     var Home = require('./Home');
-
+    var Compare = require('./Compare');
+    
     module.exports = Quote;
 
     function Quote() {
@@ -11,6 +12,7 @@
             modalClose: $('.modal-dialog [ng-click ^= cancel]'),
             plans: element.all(by.repeater('plan in plans')),
             filter: $('[ng-controller = filterController'),
+            comparePlans: $('[ui-sref^="quote.compare"]'),
         }
 
         self.plans = function () {
@@ -53,7 +55,7 @@
         }
 
         self.allCarriersNotDisplaying = function (logoName) {
-            return self.allPlans(function (plan) {
+            return allPlans(function (plan) {
                 return plan.carrier().then(function (carrier) {
                     return carrier.toLowerCase() != logoName.toLowerCase();
                 });
@@ -61,7 +63,7 @@
         }
 
         self.allMetalTypesNotDisplaying = function (metalType) {
-            return self.allPlans(function (plan) {
+            return allPlans(function (plan) {
                 return plan.metal().then(function (x) {
                     return x.toLowerCase() != metalType.toLowerCase();
                 });
@@ -69,14 +71,14 @@
         }
 
         self.allHsaEligible = function () {
-            return self.allPlans(function (plan) {
+            return allPlans(function (plan) {
                 return plan.isHsaEligible();
             });
         }
 
 
 
-        self.allPlans = function (predicate) {
+        var allPlans = function (predicate) {
             return self.plans().reduce(function (acc, plan) {
                 if (!acc) return false;
                 return predicate(plan).then(function (satisfies) {
@@ -85,7 +87,7 @@
             }, true);
         }
 
-        self.somePlans = function (predicate) {
+        var somePlans = function (predicate) {
             return self.plans().reduce(function (acc, plan) {
                 if (acc) return true;
                 return predicate(plan).then(function (satisfies) {
@@ -94,8 +96,6 @@
             }, false)
         }
 
-
-        // direction: ascending: true, descending: false
         self.isSorted = function (getValue, isAscending) {
             return self.plans().reduce(function (acc, plan) {
                 return getValue(plan).then(function (p) {
@@ -110,6 +110,12 @@
                 return acc.passes;
             });
         }
+        
+        self.clickComparePlans = function(){
+            return controls.comparePlans.click().sleep(4000);
+        }
+        
+        self.comparePage = function() { return new Compare(element); }
     }
 
     function Plan(control) {
@@ -119,14 +125,14 @@
             name: control.element(by.binding('plan.display_name')),
             deductible: control.element(by.binding('plan.deductible')),
             premium: control.element(by.binding('plan.premium')),
-            hsaEligible: control.element(by.css('[ng-show ^= "plan.hsa_eligible"] .fa-times.ng-hide')),
-            carrier: control.element(by.css('.quote-logo img')),
+            hsaEligible: control.$('[ng-show ^= "plan.hsa_eligible"] .fa-times.ng-hide'),
+            carrier: control.$('.quote-logo img'),
             metalLevel: control.element(by.binding('plan.metal_level')),
-            compare: control.element(by.css('.compare-tick')),
-            select: control.element(by.css('a[ui-sref ^= "quote.cart"]')),
-            showMore: control.element(by.css('.fa-info-circle')),
-            planInfo: control.element(by.css('[ng-click ^= moreInfo]')),
-            modal: $('.modal') 
+            compare: control.$('.compare-tick i'),
+            select: control.$('a[ui-sref ^= "quote.cart"]'),
+            showMore: control.$('.fa-info-circle'),
+            planInfo: control.$('[ng-click ^= moreInfo]'),
+            modal: $('.modal')
         }
 
         self.name = function () {
@@ -177,27 +183,9 @@
             return controls.planInfo.click().sleep(4000);
         }
 
-        self.planInfo = new PlanInfo(controls.modal);
+        self.planInfo = new Compare(controls.modal);
     }
 
-    function PlanInfo(control) {
-            var controls = {
-                name: control.element(by.binding('plan.display_name')),
-                premium: control.element(by.binding('plan.premium'))
-            }
-
-            this.premium = function () {
-                return controls.premium
-                    .getText().then(function (x) {
-                        return x.trimCurrency();
-                    });
-            }
-
-            this.name = function () {
-                return controls.name.getText();
-            }
-        };
-    
     function Filter(control) {
         var self = this;
 
@@ -215,12 +203,11 @@
             showOnlyHsa: control.$('[ng-click ^= showHSA]'),
             metalTypePane: control.$('.panel-primary-inner .fa-shield + .fa-caret-right'),
             metalTypes: control.all(by.binding('metal.name')),
-            sortButton: control.element(by.css('.btn-orange-sm.dropdown-toggle')),
-            sortPriceDesc: control.element(by.css('[ng-click *= premium][ng-click *= desc]')),
-            sortPriceAsc: control.element(by.css('[ng-click *= premium][ng-click *= asc]')),
-            sortDeductibleDesc: control.element(by.css('[ng-click *= deductible][ng-click *= desc]')),
-            sortDeductibleAsc: control.element(by.css('[ng-click *= deductible][ng-click *= asc]'))
-
+            sortButton: control.$('.btn-orange-sm.dropdown-toggle'),
+            sortPriceDesc: control.$('[ng-click *= premium][ng-click *= desc]'),
+            sortPriceAsc: control.$('[ng-click *= premium][ng-click *= asc]'),
+            sortDeductibleDesc: control.$('[ng-click *= deductible][ng-click *= desc]'),
+            sortDeductibleAsc: control.$('[ng-click *= deductible][ng-click *= asc]')
         }
 
         ////// Premium ///////
