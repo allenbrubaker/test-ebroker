@@ -64,9 +64,31 @@ describe('quote:', function () {
             });
         });
 
+        it('shows plan info modal on plan info button click', function () {
+            quote.plans().spread(function(plan) { 
+                return Promise.props({
+                    name: plan.name(),
+                    premium: plan.premium()
+                })
+                .then(function (result) {
+                    return plan.showPlanInfo().then(function () {
+                        return Promise.props({
+                            name: plan.planInfo.name(),
+                            premium: plan.planInfo.premium()
+                        })
+                        .then(function (info) {
+                            result.name.should.equal(info.name);
+                            result.premium.should.equal(info.premium);
+                        })
+                    })
+                })
+            })
+        });
+        
+        
     });
 
-    describe.only("sort:", function () {
+    describe("sort:", function () {
         it('displays premium in descending order', function () {
             quote.sort.sortPremium(false).then(function () {
                 return quote.isSorted(function (plan) {
@@ -94,7 +116,7 @@ describe('quote:', function () {
                 return quote.isSorted(function (plan) {
                     return plan.deductible();
                 }, true).should.eventually.be.true;
-            })  
+            })
         })
     })
 });

@@ -106,7 +106,9 @@
             }, {
                 passes: true,
                 value: isAscending ? -99999 : 99999
-            }).then(function(acc) { return acc.passes; });
+            }).then(function (acc) {
+                return acc.passes;
+            });
         }
     }
 
@@ -114,6 +116,7 @@
         var self = this;
 
         var controls = {
+            name: control.element(by.binding('plan.display_name')),
             deductible: control.element(by.binding('plan.deductible')),
             premium: control.element(by.binding('plan.premium')),
             hsaEligible: control.element(by.css('[ng-show ^= "plan.hsa_eligible"] .fa-times.ng-hide')),
@@ -121,7 +124,13 @@
             metalLevel: control.element(by.binding('plan.metal_level')),
             compare: control.element(by.css('.compare-tick')),
             select: control.element(by.css('a[ui-sref ^= "quote.cart"]')),
-            showMore: control.element(by.css('.fa-info-circle'))
+            showMore: control.element(by.css('.fa-info-circle')),
+            planInfo: control.element(by.css('[ng-click ^= moreInfo]')),
+            modal: $('.modal') 
+        }
+
+        self.name = function () {
+            return controls.name.getText();
         }
 
         self.deductible = function () {
@@ -163,8 +172,32 @@
         self.showMore = function () {
             return controls.showMore.click();
         }
+
+        self.showPlanInfo = function () {
+            return controls.planInfo.click().sleep(4000);
+        }
+
+        self.planInfo = new PlanInfo(controls.modal);
     }
 
+    function PlanInfo(control) {
+            var controls = {
+                name: control.element(by.binding('plan.display_name')),
+                premium: control.element(by.binding('plan.premium'))
+            }
+
+            this.premium = function () {
+                return controls.premium
+                    .getText().then(function (x) {
+                        return x.trimCurrency();
+                    });
+            }
+
+            this.name = function () {
+                return controls.name.getText();
+            }
+        };
+    
     function Filter(control) {
         var self = this;
 
