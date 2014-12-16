@@ -98,38 +98,43 @@ describe('quote:', function () {
         })
     })
 
-    it('shows plan info modal on plan info button click', function () {
-        quote.plans().spread(function (plan) {
-            return Promise.all([plan, plan.name(), plan.premium()])
-        }).spread(function (plan, name, premium) {
-            return plan.showPlanInfo()
-                .then(function () {
-                    return plan.planInfo.containsPlan(name, premium).should.eventually.be.true;
-                })
-        })
-    });
+    describe('basic:', function () {
 
-    it('comparing plans displays details for each plan on compare page', function () {
-        quote.plans()
-            .spread(function (p1, p2) {
-                return Promise.map([p1, p2], function (p) {
-                    return p.clickCompare().then(function () {
-                        return Promise.props({
-                            name: p.name(),
-                            premium: p.premium()
-                        })
+
+        it('clicking plan info shows plan detail modal with correct data', function () {
+            quote.plans().spread(function (plan) {
+                return Promise.all([plan, plan.name(), plan.premium()])
+            }).spread(function (plan, name, premium) {
+                return plan.showPlanInfo()
+                    .then(function () {
+                        return plan.planInfo.containsPlan(name, premium).should.eventually.be.true;
                     })
-                }).then(function (plans) {
-                    return quote.clickComparePlans()
-                        .then(function () {
-                            return plans.reduce(function (acc, plan) {
-                                return quote.comparePage().containsPlan(plan.name, plan.premium)
-                                    .then(function (contains) {
-                                        return acc && contains;
-                                    });
-                            }, true).should.eventually.equal(true);
-                        });
-                })
-            });
-    });
+            })
+        });
+
+        it('comparing plans displays details for each plan on compare page', function () {
+            quote.plans()
+                .spread(function (p1, p2) {
+                    return Promise.map([p1, p2], function (p) {
+                        return p.clickCompare().then(function () {
+                            return Promise.props({
+                                name: p.name(),
+                                premium: p.premium()
+                            })
+                        })
+                    }).then(function (plans) {
+                        return quote.clickComparePlans()
+                            .then(function () {
+                                return plans.reduce(function (acc, plan) {
+                                    return quote.comparePage().containsPlan(plan.name, plan.premium)
+                                        .then(function (contains) {
+                                            return acc && contains;
+                                        });
+                                }, true).should.eventually.equal(true);
+                            });
+                    })
+                });
+        });
+    })
+
 });
