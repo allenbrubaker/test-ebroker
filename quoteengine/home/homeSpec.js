@@ -1,4 +1,4 @@
-var Home = require('./util/Home');
+var Home = require('./Home');
 
 describe('home:', function () {
     this.timeout(99999);
@@ -39,7 +39,7 @@ describe('home:', function () {
     });
     
     it('allows addition and deletion of dependents', function () {
-        home.enterZip(constants.zipWithSingleCounty);
+        home.enterZip('17012');
         home.addSelf();
         home.assertDependentsCount(1);
         home.addSpouse();

@@ -1,5 +1,4 @@
 (function () {
-    var util = require('./util');
     module.exports = Home;
 
     function Home() {
@@ -14,7 +13,7 @@
         }
 
         self.load = function () {
-            util.go();
+            browser.get('/');
             self.clearZip();
         }
 
