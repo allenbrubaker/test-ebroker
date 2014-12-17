@@ -1,5 +1,4 @@
-var Quote = require('./util/Quote');
-var Home = require('./util/Home');
+var Quote = require('./Quote');
 
 describe('quote:', function () {
 

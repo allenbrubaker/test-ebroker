@@ -1,6 +1,6 @@
 (function () {
 
-    var Home = require('./Home');
+    var Home = require('../home/Home');
     var Cart = require('./Cart');
     
     module.exports = Quote;

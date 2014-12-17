@@ -1,4 +1,4 @@
-var Home = require('./util/Home');
+var Home = require('./Home');
 
 describe('home:', function () {
     this.timeout(99999);
