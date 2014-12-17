@@ -8,8 +8,7 @@
             taxCredit: controls.element(by.css('.label-success.label-xlb')),
             premiumsWithoutTaxCredit: controls.all(by.css('.oswald.small-premium.slashed'))
         };
-    };
-    
+        
     self.premiumsWithoutTaxCredit = value(controls.premiumsWithoutTaxCredit);
     self.taxCredit = function(){
         return controls.taxCredit.getText().then(function(x){
@@ -24,7 +23,7 @@
             creditedPremium: self.premiumsWithTaxCredit(),
             uncreditedPremium: self.premiumsWithoutTaxCredit(),
         }).then(function(result){
-            for(int i = 0; i < result.creditedPremium.length; i++){
+            for(i = 0; i < result.creditedPremium.length; i++){
                 return taxCredit == result.uncreditedPremium[i] - result.creditedPremium[i];
             }
         });
@@ -40,5 +39,5 @@
                 }));
         }
     }
-    
+};  
 })();
