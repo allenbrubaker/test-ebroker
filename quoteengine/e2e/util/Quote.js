@@ -1,7 +1,7 @@
 (function () {
 
     var Home = require('./Home');
-    var Compare = require('./Compare');
+    var Cart = require('./Cart');
     
     module.exports = Quote;
 
@@ -38,24 +38,24 @@
             return controls.modalClose.click();
         }
 
-        self.assertPremiumsAtMostFilter = function () {
+        self.allPremiumsAtMostFilter = function () {
             return self.filter.maxPremium().then(function (max) {
-                return self.plans().each(function (plan) {
-                    plan.premium().should.eventually.be.at.most(max);
+                return self.plans().every(function (plan) {
+                    return plan.premium().then(function(p){return p<=max});
                 })
             })
         }
 
-        self.assertDeductiblesAtMostFilter = function () {
+        self.allDeductiblesAtMostFilter = function () {
             return self.filter.maxDeductible().then(function (max) {
-                self.plans().each(function (plan) {
-                    plan.deductible().should.eventually.be.at.most(max);
+                self.plans().every(function (plan) {
+                    plan.deductible().then(function(d){return d<=max});
                 })
             })
         }
 
         self.allCarriersNotDisplaying = function (logoName) {
-            return allPlans(function (plan) {
+            return self.plans().every(function (plan) {
                 return plan.carrier().then(function (carrier) {
                     return carrier.toLowerCase() != logoName.toLowerCase();
                 });
@@ -63,7 +63,7 @@
         }
 
         self.allMetalTypesNotDisplaying = function (metalType) {
-            return allPlans(function (plan) {
+            return self.plans().every(function (plan) {
                 return plan.metal().then(function (x) {
                     return x.toLowerCase() != metalType.toLowerCase();
                 });
@@ -71,31 +71,11 @@
         }
 
         self.allHsaEligible = function () {
-            return allPlans(function (plan) {
+            return self.plans().every(function (plan) {
                 return plan.isHsaEligible();
             });
         }
-
-
-
-        var allPlans = function (predicate) {
-            return self.plans().reduce(function (acc, plan) {
-                if (!acc) return false;
-                return predicate(plan).then(function (satisfies) {
-                    return acc && satisfies;
-                });
-            }, true);
-        }
-
-        var somePlans = function (predicate) {
-            return self.plans().reduce(function (acc, plan) {
-                if (acc) return true;
-                return predicate(plan).then(function (satisfies) {
-                    return acc || satisfies;
-                })
-            }, false)
-        }
-
+        
         self.isSorted = function (getValue, isAscending) {
             return self.plans().reduce(function (acc, plan) {
                 return getValue(plan).then(function (p) {
@@ -115,7 +95,7 @@
             return controls.comparePlans.click().sleep(4000);
         }
         
-        self.comparePage = function() { return new Compare(); }
+        self.comparePage = function() { return new Cart(); }
     }
 
     function Plan(control) {
@@ -183,7 +163,7 @@
             return controls.planInfo.click().sleep(4000);
         }
 
-        self.planInfo = new Compare(controls.modal);
+        self.planInfo = new Cart(controls.modal);
     }
 
     function Filter(control) {
@@ -201,6 +181,7 @@
             carriers: control.all(by.binding('carrier.name')),
             planTypePane: control.$('.panel-primary-inner .fa-eye + .fa-caret-right'),
             showOnlyHsa: control.$('[ng-click ^= showHSA]'),
+            marketplacePlans: control.all(by.css('[ng-click^=marketPlaceFilter]')).get(0),
             metalTypePane: control.$('.panel-primary-inner .fa-shield + .fa-caret-right'),
             metalTypes: control.all(by.binding('metal.name')),
             sortButton: control.$('.btn-orange-sm.dropdown-toggle'),
@@ -283,6 +264,10 @@
 
         self.clickShowOnlyHsa = function () {
             return controls.showOnlyHsa.click().sleep(4000);
+        }
+        
+        self.clickMarketplacePlans = function () {
+            return controls.marketplacePlans.click().sleep(4000);
         }
 
         /////////// Metal Type //////////

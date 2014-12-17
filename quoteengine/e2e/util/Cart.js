@@ -34,6 +34,8 @@
             .spread(function(names, premiums) { return names.indexOf(name) != -1 && premiums.indexOf(premium) != -1; });
         };
         
+        
+        
         self.clickBack = function () { controls.back.click(); };
         
         self.clickClose = function () { controls.close.click(); };

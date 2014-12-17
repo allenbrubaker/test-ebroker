@@ -2,6 +2,7 @@ var Quote = require('./util/Quote');
 var Home = require('./util/Home');
 
 describe('quote:', function () {
+
     this.timeout(99999);
 
     var quote;
@@ -19,7 +20,7 @@ describe('quote:', function () {
                     return quote.filter.movePremiumSlider(-20)
                 })
                 .then(function () {
-                    return quote.assertPremiumsAtMostFilter();
+                    return quote.allPremiumsAtMostFilter().should.eventually.be.true;
                 })
                 .then(function () {
                     return quote.filter.movePremiumSlider(20 * 1.1);
@@ -30,7 +31,7 @@ describe('quote:', function () {
             //            quote.filter.expandPriceFilter()
             quote.filter.moveDeductibleSlider(-30)
                 .then(function () {
-                    return quote.assertDeductiblesAtMostFilter();
+                    return quote.allDeductiblesAtMostFilter().should.eventually.be.true;
                 })
                 .then(function () {
                     return quote.filter.moveDeductibleSlider(30 * 1.1);
@@ -41,26 +42,23 @@ describe('quote:', function () {
             quote.filter.expandCarrierFilter().then(function () {
                 return quote.filter.clickCarrier(/healthamericaone/i);
             }).then(function () {
-                quote.allCarriersNotDisplaying('healthamericaone').should.eventually.be.true;
+                return quote.allCarriersNotDisplaying('healthamericaone').should.eventually.be.true;
             });
         });
 
-        it('shows only HSA eligible on filter', function (done) {
+        it('shows only HSA eligible on filter', function () {
             quote.filter.expandPlanTypeFilter()
                 .then(quote.filter.clickShowOnlyHsa)
-                .then(quote.allHsaEligible)
-                .then(function (allHsaEligible) {
-                    allHsaEligible.should.be.true;
-                })
+                .then(function () {
+                    return quote.allHsaEligible.should.eventually.be.true;
+                });
         });
 
         it('metalType filter functions correctly', function () {
             quote.filter.expandMetalTypeFilter().then(function () {
                 return quote.filter.clickMetalType(/bronze/i);
             }).then(function () {
-                return quote.allMetalTypesNotDisplaying('bronze');
-            }).then(function (notDisplaying) {
-                notDisplaying.should.be.true;
+                return quote.allMetalTypesNotDisplaying('bronze').should.eventually.be.true;
             });
         });
 
@@ -98,8 +96,7 @@ describe('quote:', function () {
         })
     })
 
-    describe.only('basic:', function () {
-
+    describe('basic:', function () {
 
         it('clicking plan info shows plan detail modal with correct data', function () {
             quote.plans().spread(function (plan) {
@@ -113,28 +110,30 @@ describe('quote:', function () {
         });
 
         it('comparing plans displays details for each plan on compare page', function () {
-            quote.plans()
-                .spread(function (p1, p2) {
-                    return Promise.map([p1, p2], function (p) {
-                        return p.clickCompare().then(function () {
-                            return Promise.props({
-                                name: p.name(),
-                                premium: p.premium()
-                            })
-                        })
-                    }).then(function (plans) {
-                        return quote.clickComparePlans()
-                            .then(function () {
-                                return plans.reduce(function (acc, plan) {
-                                    return quote.comparePage().containsPlan(plan.name, plan.premium)
-                                        .then(function (contains) {
-                                            return acc && contains;
-                                        });
-                                }, true).should.eventually.equal(true);
-                            });
-                    }).then(quote.comparePage().clickBack);
-                });
+            quote.takePlans(2).map(function (p) {
+                return p.clickCompare().then(function () {
+                    return Promise.props({
+                        name: p.name(),
+                        premium: p.premium()
+                    })
+                })
+            }).then(function (plans) {
+                return quote.clickComparePlans()
+                    .then(function () {
+                        return plans.reduce(function (acc, plan) {
+                            return quote.comparePage().containsPlan(plan.name, plan.premium)
+                                .then(function (contains) {
+                                    return acc && contains;
+                                });
+                        }, true).should.eventually.equal(true);
+                    });
+            }).then(quote.comparePage().clickBack);
         });
-    })
 
-});
+        it('select a plan', function () {
+            quote.filter.expandPlanTypeFilter().then(function () {
+                return quote.clickMarketplacePlans;
+            });
+        });
+    });
+})
