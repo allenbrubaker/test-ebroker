@@ -1,10 +1,4 @@
-var proto = require('protractor').promise.Promise.prototype;
-
-Object.defineProperty(
-    proto,
-    'should',
-    Object.getOwnPropertyDescriptor(Object.prototype, 'should')
-);
+var proto = protractor.promise.Promise.prototype;
 
 proto.sleep = function (ms) {
     return browser.sleep(ms);

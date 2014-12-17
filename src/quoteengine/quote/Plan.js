@@ -1,5 +1,7 @@
 module.exports = Plan;
 
+var Cart = require('./cart');
+
 function Plan(control) {
         var self = this;
 

@@ -1,6 +1,6 @@
 var Quote = require('./Quote');
 
-describe('quote:', function () {
+describe.only('quote:', function () {
 
     this.timeout(99999);
 
