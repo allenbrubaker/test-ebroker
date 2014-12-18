@@ -95,7 +95,7 @@ describe('quote:', function () {
         })
     })
 
-    describe('basic:', function () {
+    describe('cart:', function () {
 
         it('clicking plan info shows plan detail modal with correct data', function () {
             quote.plans().spread(function (plan) {
@@ -115,21 +115,18 @@ describe('quote:', function () {
                         name: p.name(),
                         premium: p.premium()
                     })
-                })
+                })  
             }).then(function (plans) {
                 return quote.clickComparePlans()
                     .then(function () {
-                        return plans.reduce(function (acc, plan) {
-                            return quote.comparePage().containsPlan(plan.name, plan.premium)
-                                .then(function (contains) {
-                                    return acc && contains
-                                })
-                        }, true).should.eventually.equal(true)
+                        return plans.every(function (plan) {
+                            return quote.comparePage().containsPlan(plan.name, plan.premium);
+                        }).should.eventually.equal(true)
                     })
             }).then(quote.comparePage().clickBack)
         })
 
-        it('select a plan', function () {
+        it('selecting a plan navigates to cart and displays selected plans', function () {
             quote.filter.expandPlanTypeFilter().then(function () {
                 return quote.clickMarketplacePlans
             })

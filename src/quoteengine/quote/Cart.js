@@ -33,6 +33,7 @@
             return Promise.all([self.names(), self.premiums()])
             .spread(function(names, premiums) { return names.indexOf(name) != -1 && premiums.indexOf(premium) != -1; });
         };
+
         
         self.clickBack = function () { controls.back.click(); };
         
