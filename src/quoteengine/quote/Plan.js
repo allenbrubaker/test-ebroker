@@ -1,9 +1,9 @@
-module.exports = Plan;
+module.exports = Plan
 
-var Cart = require('./cart');
+var Cart = require('./cart')
 
 function Plan(control) {
-        var self = this;
+        var self = this
 
         var controls = {
             name: control.element(by.binding('plan.display_name')),
@@ -20,52 +20,52 @@ function Plan(control) {
         }
 
         self.name = function () {
-            return controls.name.getText();
+            return controls.name.getText()
         }
 
         self.deductible = function () {
             return controls.deductible
                 .getText().then(function (x) {
-                    return x.trimCurrency();
-                });
-        };
+                    return x.trimCurrency()
+                })
+        }
 
         self.premium = function () {
             return controls.premium
                 .getText().then(function (x) {
-                    return x.trimCurrency();
-                });
-        };
+                    return x.trimCurrency()
+                })
+        }
 
         self.isHsaEligible = function () {
-            return controls.hsaEligible.isPresent();
-        };
+            return controls.hsaEligible.isPresent()
+        }
 
         self.carrier = function () {
             return controls.carrier.getAttribute('src').then(function (s) {
-                return s.match(/.*\/(.*)\.(jpg|gif|png)/i)[0].replace('logo', '');
-            });
-        };
+                return s.match(/.*\/(.*)\.(jpg|gif|png)/i)[0].replace('logo', '')
+            })
+        }
 
         self.metal = function () {
-            return controls.metalLevel.getText();
-        };
+            return controls.metalLevel.getText()
+        }
 
         self.clickCompare = function () {
-            return controls.compare.click();
+            return controls.compare.click()
         }
 
         self.selectPlan = function () {
-            return controls.select.click();
+            return controls.select.click()
         }
 
         self.showMore = function () {
-            return controls.showMore.click();
+            return controls.showMore.click()
         }
 
         self.showPlanInfo = function () {
-            return controls.planInfo.click().sleep(4000);
+            return controls.planInfo.click().sleep(4000)
         }
 
-        self.planInfo = new Cart(controls.modal);
+        self.planInfo = new Cart(controls.modal)
     }

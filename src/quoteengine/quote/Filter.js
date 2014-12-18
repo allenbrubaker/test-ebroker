@@ -4,19 +4,19 @@ function Filter(control) {
         var self = this;
 
         var controls = {
-            pricePane: control.$('.panel-primary-inner .fa-dollar + .fa-caret-right'),
+            pricePane: control.$('.panel-primary-inner .fa-dollar'),
             premium: control.element(by.binding('filters.maxPrice')),
             deductible: control.element(by.binding('filters.maxDeductible')),
             premiumSliderThumb: control.$('[slider-model="filters.maxPrice"] .grabber'),
             premiumSliderTrack: control.$('[slider-model="filters.maxPrice"]'),
             deductibleSliderThumb: control.$('[slider-model="filters.maxDeductible"] .grabber'),
             deductibleSliderTrack: control.$('[slider-model="filters.maxDeductible"]'),
-            carriersPane: control.$('.panel-primary-inner .fa-shopping-cart + .fa-caret-right'),
+            carriersPane: control.$('.panel-primary-inner .fa-shopping-cart'),
             carriers: control.all(by.binding('carrier.name')),
-            planTypePane: control.$('.panel-primary-inner .fa-eye + .fa-caret-right'),
+            planTypePane: control.$('.panel-primary-inner .fa-eye'),
             showOnlyHsa: control.$('[ng-click ^= showHSA]'),
             marketplacePlans: control.all(by.css('[ng-click^=marketPlaceFilter]')).get(0),
-            metalTypePane: control.$('.panel-primary-inner .fa-shield + .fa-caret-right'),
+            metalTypePane: control.$('.panel-primary-inner .fa-shield'),
             metalTypes: control.all(by.binding('metal.name')),
             sortButton: control.$('.btn-orange-sm.dropdown-toggle'),
             sortPriceDesc: control.$('[ng-click *= premium][ng-click *= desc]'),
