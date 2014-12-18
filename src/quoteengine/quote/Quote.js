@@ -27,7 +27,7 @@
         }
 
         self.filter = new Filter(controls.filter);
-
+        self.cart = new Cart();
         self.sort = new Sort();
 
         self.load = function () {
@@ -98,8 +98,6 @@
         self.clickComparePlans = function(){
             return controls.comparePlans.click().sleep(4000);
         }
-        
-        self.comparePage = function() { return new Cart(); }
     }
 
 

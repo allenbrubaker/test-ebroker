@@ -115,21 +115,34 @@ describe('quote:', function () {
                         name: p.name(),
                         premium: p.premium()
                     })
-                })  
+                })
             }).then(function (plans) {
                 return quote.clickComparePlans()
                     .then(function () {
                         return plans.every(function (plan) {
-                            return quote.comparePage().containsPlan(plan.name, plan.premium);
+                            return quote.cart.containsPlan(plan.name, plan.premium);
                         }).should.eventually.equal(true)
                     })
             }).then(quote.comparePage().clickBack)
         })
 
-        it('selecting a plan navigates to cart and displays selected plans', function () {
-            quote.filter.expandPlanTypeFilter().then(function () {
-                return quote.clickMarketplacePlans
-            })
+        it.only('selecting a plan navigates to cart and displays selected plans', function () {
+            Promise.resolve(quote.filter.expandPlanTypeFilter())
+                .then(quote.filter.clickMarketplacePlans)
+//                .delay(4000)
+                .then(quote.plans)
+                .spread(function (plan) {
+                    return plan.selectPlan();
+                })
+                .then(function (plan) {
+                    return [plan.name(), plan.premium()]
+                })
+                .all()
+                .spread(quote.cart.containsPlan)
+                .then(function (contains) {
+                    return contains.should.be.true
+                })
+                .then(quote.cart.clickClose);
         })
     })
 })

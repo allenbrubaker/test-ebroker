@@ -93,7 +93,7 @@ function Filter(control) {
         ////////// Plan Type ///////////
 
         self.expandPlanTypeFilter = function () {
-            return controls.planTypePane.click();
+            return controls.planTypePane.click().sleep(2000);
         }
 
         self.clickShowOnlyHsa = function () {
@@ -101,7 +101,7 @@ function Filter(control) {
         }
         
         self.clickMarketplacePlans = function () {
-            return controls.marketplacePlans.click().sleep(4000);
+            return controls.marketplacePlans.click().sleep(8000);
         }
 
         /////////// Metal Type //////////
