@@ -1,14 +1,16 @@
 var Quote = require('./Quote');
+var TaxCredit = require('./TaxCredit');
 
 describe('quote:', function () {
 
     this.timeout(99999);
 
     var quote;
-
+    var taxCredit;
     before(function () {
         quote = new Quote();
         quote.load();
+        taxCredit = new TaxCredit();
     });
 
     describe('filters:', function () {
@@ -135,4 +137,12 @@ describe('quote:', function () {
             });
         });
     });
+
+    /************************** Tax Credit Test *****************************/
+    describe.only("taxcredit:", function(){
+        it('going through the scenarios should display the tax credit and the premiums after',             function(){
+            taxCredit.computeTaxCredit();
+        });
+    });
 })
+

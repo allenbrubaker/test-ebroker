@@ -100,7 +100,7 @@
         }
         
         self.comparePage = function() { return new Cart(); }
+        
     }
-
 
 })();
