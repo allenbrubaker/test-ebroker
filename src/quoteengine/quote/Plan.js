@@ -55,7 +55,7 @@ function Plan(control) {
             return controls.compare.click()
         }
 
-        self.selectPlan = function () {
+        self.select = function () {
             return controls.select.click().sleep(2000);
         }
 
@@ -67,5 +67,5 @@ function Plan(control) {
             return controls.planInfo.click().sleep(4000)
         }
 
-        self.planInfo = new Cart(controls.modal)
+        self.planInfo = new Cart(controls.modal, 'plan')
     }

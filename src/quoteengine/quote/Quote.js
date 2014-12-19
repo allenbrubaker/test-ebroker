@@ -27,7 +27,8 @@
         }
 
         self.filter = new Filter(controls.filter);
-        self.cart = new Cart();
+		self.cart = new Cart();
+		self.compare = new Cart(null, 'plan');
         self.sort = new Sort();
 
         self.load = function () {
