@@ -26,7 +26,6 @@
     }
 
     Promise.prototype.first = function () {
-        console.log(this);
         return this.get(0)
     }
 

@@ -56,7 +56,7 @@
 		}
 
 		self.checkout = function () {
-			return controls.checkout.click().sleep(10000)
+			return controls.checkout.click().sleep(3000)
 		}
 
 	}
@@ -64,10 +64,10 @@
 	function Agent(control) {
 		var self = this
 		var controls = {
-			select: control.$('[ng-click^=selectAgent]')
+			select: control.$('p')
 		}
 		self.select = function () {
-			controls.select.click().sleep(6000)
+			return controls.select.click().sleep(7000)
 		}
 	}
 })()

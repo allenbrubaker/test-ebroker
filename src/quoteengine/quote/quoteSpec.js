@@ -5,7 +5,7 @@ describe('quote:', function () {
     this.timeout(99999)
 
     var quote;
-    var taxCredit;
+    
     before(function () {
         quote = new Quote();
         quote.load();
@@ -156,12 +156,13 @@ describe('quote:', function () {
                 .then(quote.cart.agents)
                 .first()
                 .call('select')
+                .then(function() { return browser.get('/')}).delay(3000)
                 .then(quote.load)
         })
 
     })
 
-    describe.only("taxcredit:", function () {
+    describe("taxcredit:", function () {
         it('should follow all the steps and display a tax credit of $28.67.', function () {
             quote.taxCredit.computeTaxCredit()
         });
