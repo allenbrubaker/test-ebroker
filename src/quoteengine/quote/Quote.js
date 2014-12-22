@@ -52,8 +52,8 @@
 
         self.allDeductiblesAtMostFilter = function () {
             return self.filter.maxDeductible().then(function (max) {
-                self.plans().every(function (plan) {
-                    plan.deductible().then(function(d){return d<=max});
+                return self.plans().every(function (plan) {
+                    return plan.deductible().then(function(d){return d<=max});
                 })
             })
         }

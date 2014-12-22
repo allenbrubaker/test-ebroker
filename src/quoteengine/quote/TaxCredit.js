@@ -1,6 +1,7 @@
-(function(){
+(function () {
     module.exports = TaxCredit;
     var Home = require('../home/Home');
+    
     function TaxCredit(){
         var self = this;
         var controls = {
@@ -18,14 +19,14 @@
         };
     
     var value = function(item){
-    return function(){
-        return Promise.resolve(item
-            .map(function(control){
-                return control.getText().then(function(x){
-                    return x.trimCurrency();
-                });
-            }));
-    }
+        return function(){
+            return Promise.resolve(item
+                .map(function(control){
+                    return control.getText().then(function(x){
+                        return x.trimCurrency();
+                    });
+                }));
+        }
     }
     
     self.load = function(){
@@ -42,25 +43,21 @@
     }
     
     self.premiumsWithTaxCredit = value(controls.premiumsWithTaxCredit);
-    
-    self.isCorrectPremium = function(){
-        Promise.props({
-            creditedPremium: self.premiumsWithTaxCredit(),
-            uncreditedPremium: self.premiumsWithoutTaxCredit(),
-        }).then(function(result){
-            for(i = 0; i < result.creditedPremium.length; i++){
-                return taxCredit == result.uncreditedPremium[i] - result.creditedPremium[i];
-            }
+        
+    self.isCorrectPremium = function () {
+        self.taxCredit().then(function(taxCredit) { 
+            
+            return Promise.zip(self.premiumsWithoutTaxCredit(), self.premiumsWithTaxCredit())
+            .every(function(result){
+                    return Math.abs(taxCredit - (result[0] - result[1])) < 1e-6;
+            });
+            
         });
     }
     
-        
+
         self.clickFindOutHow = function(){
             return controls.findOutHowButton.click().sleep(1000);
-        }
-        
-        self.clickCancel = function(){
-            return controls.cancelButton.click().sleep(1000);
         }
         
         self.clickTaxEstimator = function(){
@@ -105,5 +102,7 @@
             browser.sleep(3000);
             return self.taxCredit() == '28.67';
         }
+
 };  
+
 })();
