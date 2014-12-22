@@ -1,15 +1,15 @@
-var Quote = require('./Quote')
+var Quote = require('./Quote');
 
 describe('quote:', function () {
 
     this.timeout(99999)
 
-    var quote
-
+    var quote;
+    var taxCredit;
     before(function () {
-        quote = new Quote()
-        quote.load()
-    })
+        quote = new Quote();
+        quote.load();
+    });
 
     describe('filters:', function () {
 
@@ -146,7 +146,7 @@ describe('quote:', function () {
                 })
         })
 
-        it.only('selecting a plan can be checked out with an agent selected', function () {
+        it('selecting a plan can be checked out with an agent selected', function () {
             Promise.resolve(quote.filter.expandPlanTypeFilter())
                 .then(quote.filter.clickMarketplacePlans)
                 .then(quote.plans)
@@ -160,5 +160,15 @@ describe('quote:', function () {
         })
 
     })
+
+    describe.only("taxcredit:", function () {
+        it('should follow all the steps and display a tax credit of $28.67.', function () {
+            quote.taxCredit.computeTaxCredit()
+        });
+
+        it('should check all the premiums to ensure the taxcredit was applied correctly', function () {
+            quote.taxCredit.isCorrectPremium()
+        });
+    });
 
 })

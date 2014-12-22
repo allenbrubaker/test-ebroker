@@ -6,7 +6,7 @@
     var Filter = require('./Filter');
     var TaxCredit = require('./TaxCredit');
     var Sort = require('./Sort');
-    
+
     module.exports = Quote;
 
     function Quote() {
@@ -27,9 +27,10 @@
         }
 
         self.filter = new Filter(controls.filter);
-		self.cart = new Cart();
-		self.compare = new Cart(null, 'plan');
+        self.cart = new Cart();
+        self.compare = new Cart(null, 'plan');
         self.sort = new Sort();
+        self.taxCredit = new TaxCredit();
 
         self.load = function () {
             browser.driver.manage().window().maximize() // needed for sliders to function correctly.
@@ -46,7 +47,9 @@
         self.allPremiumsAtMostFilter = function () {
             return self.filter.maxPremium().then(function (max) {
                 return self.plans().every(function (plan) {
-                    return plan.premium().then(function(p){return p<=max});
+                    return plan.premium().then(function (p) {
+                        return p <= max
+                    });
                 })
             })
         }
@@ -54,7 +57,9 @@
         self.allDeductiblesAtMostFilter = function () {
             return self.filter.maxDeductible().then(function (max) {
                 return self.plans().every(function (plan) {
-                    return plan.deductible().then(function(d){return d<=max});
+                    return plan.deductible().then(function (d) {
+                        return d <= max
+                    });
                 })
             })
         }
@@ -80,7 +85,7 @@
                 return plan.isHsaEligible();
             });
         }
-        
+
         self.isSorted = function (getValue, isAscending) {
             return self.plans().reduce(function (acc, plan) {
                 return getValue(plan).then(function (p) {
@@ -95,11 +100,11 @@
                 return acc.passes;
             });
         }
-        
-        self.clickComparePlans = function(){
+
+        self.clickComparePlans = function () {
             return controls.comparePlans.click().sleep(4000);
         }
-    }
 
+    }
 
 })();
