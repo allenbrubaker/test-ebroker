@@ -1,15 +1,15 @@
-var Quote = require('./Quote');
+var Quote = require('./Quote')
 
 describe('quote:', function () {
 
     this.timeout(99999)
 
-    var quote;
+    var quote
 
     before(function () {
-        quote = new Quote();
-        quote.load();
-    });
+        quote = new Quote()
+        quote.load()
+    })
 
     describe('filters:', function () {
 
@@ -39,7 +39,7 @@ describe('quote:', function () {
 
         it('carriers filter functions correctly', function () {
             quote.filter.expandCarrierFilter().then(function () {
-                return quote.filter.clickCarrier(/healthamericaone/i).then(quote.filter.expandCarrierFilter);
+                return quote.filter.clickCarrier(/healthamericaone/i).then(quote.filter.expandCarrierFilter)
             }).then(function () {
                 return quote.allCarriersNotDisplaying('healthamericaone').should.eventually.be.true
             })
@@ -120,7 +120,7 @@ describe('quote:', function () {
                 return quote.clickComparePlans()
                     .then(function () {
                         return plans.every(function (plan) {
-                            return quote.compare.containsPlan(plan.name, plan.premium);
+                            return quote.compare.containsPlan(plan.name, plan.premium)
                         }).should.eventually.equal(true)
                     })
             }).then(quote.comparePage().clickBack)
@@ -142,7 +142,7 @@ describe('quote:', function () {
                         return quote.cart.containsPlan(plan.name, plan.premium)
                     })
                 }).then(function (contains) {
-                    return contains.should.be.true;
+                    return contains.should.be.true
                 })
         })
 
@@ -167,18 +167,18 @@ describe('quote:', function () {
     describe("tax credit:", function () {
         it('should follow all the steps and display a tax credit of $28.67.', function () {
             quote.taxCredit.computeTaxCredit()
-        });
+        })
 
         it('should check all the premiums to ensure the taxcredit was applied correctly', function () {
             quote.taxCredit.isCorrectPremium()
-        });
-    });
+        })
+    })
 
     describe('location:', function () {
-        var l;
+        var l
 
         before(function () {
-            l = quote.location;
+            l = quote.location
         })
 
         it('entering zip code displays single county', function () {
@@ -202,8 +202,62 @@ describe('quote:', function () {
                 .then(function () {
                     return [l.assertCountyCount(2), l.assertCountyName(0, /Cumberland/), l.assertCountyName(0, /Cumberland/)]
                 })
-                .all().then(l.submit).then(l.expandLocationPane);
-        });
+                .all().then(l.submit).then(l.expandLocationPane)
+        })
+    })
+
+    describe('dependents:', function () {
+        var d
+        before(function () {
+            d = quote.dependents
+        })
+
+        it('with required fields returns medical quote', function () {
+            d.addSelf(true, '07/06/1986', false)
+                .then(d.quote)
+        })
+
+        it('with spouse and child dependency fields returns medical quote', function () {
+            d.addSelf(true, dob, false)
+                .then(function () {
+                    return d.addSpouse(false, dob, true)
+                })
+                .then(function () {
+                    return d.addChild(true, dob, false)
+                })
+                .then(d.quote)
+        })
+
+        it('allows addition and deletion of dependents', function () {
+            d.addSelf()
+                .then(function () {
+                    return d.assertDependentsCount(1)
+                })
+                .then(function () {
+                    return d.addSpouse()
+                })
+                .then(function () {
+                    return d.assertDependentsCount(2)
+                })
+                .then(function () {
+                    return d.addChild()
+                })
+                .then(function () {
+                    return d.assertDependentsCount(3)
+                })
+                .then(function () {
+                    return d.removeDependent()
+                })
+                .then(function () {
+                    return d.assertDependentsCount(2)
+                })
+                .then(function () {
+                    return d.removeDependent()
+                })
+                .then(function () {
+                    return d.assertDependentsCount(1)
+                })
+        })
     })
 
 })

@@ -7,6 +7,7 @@
     var TaxCredit = require('./TaxCredit');
     var Sort = require('./Sort');
     var Location = require('./Location');
+    var Dependents = require('./Dependents');
 
     module.exports = Quote;
 
@@ -33,6 +34,7 @@
         self.sort = new Sort();
         self.taxCredit = new TaxCredit();
         self.location = new Location();
+        self.dependents = new Dependents();
 
         self.load = function () {
             browser.driver.manage().window().maximize() // needed for sliders to function correctly.
