@@ -10,6 +10,8 @@
             addDependent: element(by.css('a[ng-click ^= addDependent]')),
             quote: element(by.css('a[ng-click ^= toQuote]')),
             dependents: element.all(by.repeater('dependent in dependents')),
+            locationPane: $('.panel-primary-inner .fa-globe'),
+            editLocation: $('[ng-click^=locationUpdate]')
         }
 
         self.load = function () {
@@ -17,7 +19,10 @@
             self.clearZip();
         }
 
-
+        self.expandLocationPane = function() { return controls.locationPane.click() }
+        self.editLocation = function() { return controls.editLocation.click().sleep(1500)}
+        
+        
         //////// Zip ////////
 
         self.clearZip = function () {
@@ -25,7 +30,7 @@
         }
 
         self.enterZip = function (zip) {
-            return controls.zip.sendKeys(zip);
+            return controls.zip.sendKeys(zip).sleep(4000);
         }
 
 

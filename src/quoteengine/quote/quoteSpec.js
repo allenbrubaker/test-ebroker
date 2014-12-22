@@ -5,7 +5,7 @@ describe('quote:', function () {
     this.timeout(99999)
 
     var quote;
-    
+
     before(function () {
         quote = new Quote();
         quote.load();
@@ -156,13 +156,15 @@ describe('quote:', function () {
                 .then(quote.cart.agents)
                 .first()
                 .call('select')
-                .then(function() { return browser.get('/')}).delay(3000)
+                .then(function () {
+                    return browser.get('/')
+                }).delay(3000)
                 .then(quote.load)
         })
 
     })
 
-    describe("taxcredit:", function () {
+    describe("tax credit:", function () {
         it('should follow all the steps and display a tax credit of $28.67.', function () {
             quote.taxCredit.computeTaxCredit()
         });
@@ -171,5 +173,37 @@ describe('quote:', function () {
             quote.taxCredit.isCorrectPremium()
         });
     });
+
+    describe('location:', function () {
+        var l;
+
+        before(function () {
+            l = quote.location;
+        })
+
+        it('entering zip code displays single county', function () {
+            return l.expandLocationPane()
+                .then(l.editLocation)
+                .then(l.clearZip)
+                .then(function () {
+                    return l.enterZip('17012')
+                })
+                .then(function () {
+                    return l.assertCountyCount(1)
+                })
+
+        })
+
+        it('entering zip code displays multiple counties', function () {
+            return Promise.resolve(l.clearZip())
+                .then(function () {
+                    return l.enterZip('17055')
+                })
+                .then(function () {
+                    return [l.assertCountyCount(2), l.assertCountyName(0, /Cumberland/), l.assertCountyName(0, /Cumberland/)]
+                })
+                .all().then(l.submit).then(l.expandLocationPane);
+        });
+    })
 
 })

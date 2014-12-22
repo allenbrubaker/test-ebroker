@@ -6,6 +6,7 @@
     var Filter = require('./Filter');
     var TaxCredit = require('./TaxCredit');
     var Sort = require('./Sort');
+    var Location = require('./Location');
 
     module.exports = Quote;
 
@@ -31,13 +32,14 @@
         self.compare = new Cart(null, 'plan');
         self.sort = new Sort();
         self.taxCredit = new TaxCredit();
+        self.location = new Location();
 
         self.load = function () {
             browser.driver.manage().window().maximize() // needed for sliders to function correctly.
             Home.login();
             controls.modalClose.click();
             browser.ignoreSynchronization = true;
-            browser.sleep(4000);
+            browser.sleep(5000);
         };
 
         self.closeModal = function () {
