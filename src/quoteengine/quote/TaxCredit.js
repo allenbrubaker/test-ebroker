@@ -38,7 +38,7 @@
         }
 
         self.isCorrectPremium = function () {
-            return self.taxCredit().then(function (taxCredit) {
+            return taxCredit().then(function (taxCredit) {
 
                 return Promise.zip(self.premiumsWithoutTaxCredit(), self.premiumsWithTaxCredit())
                     .every(function (result) {

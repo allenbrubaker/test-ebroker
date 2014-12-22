@@ -161,7 +161,7 @@ describe('quote:', function () {
 
     })
 
-    describe("taxcredit:", function () {
+    describe.only("taxcredit:", function () {
         it('should follow all the steps and display a tax credit of $28.67.', function () {
             quote.taxCredit.computeTaxCredit()
         });
