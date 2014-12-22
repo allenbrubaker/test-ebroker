@@ -14,7 +14,7 @@
 			back: control.$('[ng-click^=goToQuote]'),
 			close: control.$('[ng-click^=ok]'),
 			checkout: control.$('[ng-click^=goToNext]'),
-			agents: control.all(by.repeater('agent in agents')),
+			agents: element.all(by.repeater('agent in agents')),
 		}
 		
 		self.agents = function () {
@@ -56,7 +56,7 @@
 		}
 
 		self.checkout = function () {
-			return controls.checkout.click().sleep(5000)
+			return controls.checkout.click().sleep(10000)
 		}
 
 	}
