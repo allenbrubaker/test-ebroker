@@ -48,7 +48,7 @@
 
 
 		self.clickBack = function () {
-			return controls.back.click()
+			return scrollDown().then(controls.back.click)
 		}
 
 		self.clickClose = function () {
@@ -56,8 +56,13 @@
 		}
 
 		self.checkout = function () {
-			return controls.checkout.click().sleep(3000)
+			return scrollDown() // popup sometimes shows up hiding the checkout button.
+            .then(function() {controls.checkout.click().sleep(3000)})
 		}
+        
+        var scrollDown = function() {
+            return browser.executeScript("scroll(0, 250);");
+        }
 
 	}
 

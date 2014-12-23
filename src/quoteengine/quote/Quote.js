@@ -17,7 +17,7 @@
         var controls = {
             modalClose: $('.modal-dialog [ng-click ^= cancel]'),
             plans: element.all(by.repeater('plan in plans')),
-            filter: $('[ng-controller = filterController'),
+            filter: $('[ng-controller = filterController]'),
             comparePlans: $('[ui-sref^="quote.compare"]'),
             dependentsModal: $('.modal-dialog')
         }

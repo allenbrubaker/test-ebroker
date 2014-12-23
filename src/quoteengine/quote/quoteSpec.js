@@ -28,7 +28,9 @@ describe('quote:', function () {
 
         it('all plans shown contain deductibles at most max deductible', function () {
             quote.filter.expandPriceFilter()
-            quote.filter.moveDeductibleSlider(-30)
+                .then(function () {
+                    return quote.filter.moveDeductibleSlider(-30)
+                })
                 .then(function () {
                     return quote.allDeductiblesAtMostFilter().should.eventually.be.true
                 })
@@ -39,7 +41,7 @@ describe('quote:', function () {
 
         it('carriers filter functions correctly', function () {
             quote.filter.expandCarrierFilter().then(function () {
-                return quote.filter.clickCarrier(/healthamericaone/i).then(quote.filter.expandCarrierFilter)
+                return quote.filter.clickCarrier(/healthamericaone/i).then(quote.filter.minimizeCarrierFilter)
             }).then(function () {
                 return quote.allCarriersNotDisplaying('healthamericaone').should.eventually.be.true
             })
@@ -116,14 +118,19 @@ describe('quote:', function () {
                         premium: p.premium()
                     })
                 })
-            }).then(function (plans) {
-                return quote.clickComparePlans()
-                    .then(function () {
-                        return plans.every(function (plan) {
-                            return quote.compare.containsPlan(plan.name, plan.premium)
-                        }).should.eventually.equal(true)
-                    })
-            }).then(quote.comparePage().clickBack)
+            })
+                .then(function (plans) {
+                    return quote.clickComparePlans()
+                        .then(function () {
+                            return plans.every(function (plan) {
+                                return quote.compare.containsPlan(plan.name, plan.premium)
+                            })
+                        })
+                })
+                .then(function (contains) {
+                    return contains.should.be.true
+                })
+                .then(quote.compare.clickBack)
         })
 
         it('selecting a plan navigates to cart, which contains the plan.', function () {
@@ -143,7 +150,7 @@ describe('quote:', function () {
                     })
                 }).then(function (contains) {
                     return contains.should.be.true
-                })
+                }).then(quote.cart.clickBack);
         })
 
         it('selecting a plan can be checked out with an agent selected', function () {
@@ -191,7 +198,6 @@ describe('quote:', function () {
                 .then(function () {
                     return l.assertCountyCount(1)
                 })
-
         })
 
         it('entering zip code displays multiple counties', function () {
@@ -206,18 +212,20 @@ describe('quote:', function () {
         })
     })
 
-    describe.only('dependents:', function () {
+    describe('dependents:', function () {
         var d, dob
         before(function () {
             d = quote.dependents
             dob = '07/06/1986'
         })
-        
+
         beforeEach(function () {
             return quote.filter.expandDependentsPane().then(quote.filter.editDependents);
         })
-        
-        afterEach(function() {return d.closeModal() })
+
+        afterEach(function () {
+            return d.closeModal()
+        })
 
         it('with required fields returns medical quote', function () {
             return d.addSelf(true, dob, false)
@@ -231,7 +239,11 @@ describe('quote:', function () {
                 .then(function () {
                     return d.addChild(true, dob, false)
                 })
-                .then(function() {return d.removeDependent()}).then(function() {d.removeDependent()});
+                .then(function () {
+                    return d.removeDependent()
+                }).then(function () {
+                    d.removeDependent()
+                });
         })
 
         it('allows addition and deletion of dependents', function () {

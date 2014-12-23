@@ -56,7 +56,7 @@ function Plan(control) {
         }
 
         self.select = function () {
-            return controls.select.click().sleep(2000);
+            return controls.select.click().sleep(5000);
         }
 
         self.showMore = function () {

@@ -4,7 +4,7 @@ function Filter(control) {
     var self = this
 
     var controls = {
-        pricePane: control.$('.panel-primary-inner .fa-dollar'),
+        pricePane: control.$('.panel-primary-inner .fa-dollar + .fa-caret-right'),
         premium: control.element(by.binding('filters.maxPrice')),
         deductible: control.element(by.binding('filters.maxDeductible')),
         premiumSliderThumb: control.$('[slider-model="filters.maxPrice"] .grabber'),
@@ -12,6 +12,7 @@ function Filter(control) {
         deductibleSliderThumb: control.$('[slider-model="filters.maxDeductible"] .grabber'),
         deductibleSliderTrack: control.$('[slider-model="filters.maxDeductible"]'),
         carriersPane: control.$('.panel-primary-inner .fa-shopping-cart + .fa-caret-right'),
+        minimizeCarriersPane: control.$('.panel-primary-inner .fa-shopping-cart + .fa-caret-down'),
         carriers: control.all(by.binding('carrier.name')),
         planTypePane: control.$('.panel-primary-inner .fa-eye + .fa-caret-right'),
         showOnlyHsa: control.$('[ng-click ^= showHSA]'),
@@ -23,7 +24,7 @@ function Filter(control) {
         sortPriceAsc: control.$('[ng-click *= premium][ng-click *= asc]'),
         sortDeductibleDesc: control.$('[ng-click *= deductible][ng-click *= desc]'),
         sortDeductibleAsc: control.$('[ng-click *= deductible][ng-click *= asc]'),
-        locationPane: control.$('.panel-primary-inner .fa-globe + .fa-caret-right'),
+        locationPane: control.$('.panel-primary-inner .fa-globe'),
         editLocation: control.$('[ng-click^=locationUpdate]'),
         dependentsPane: control.$('.panel-primary-inner .fa-users + .fa-caret-right'),
         editDependents: control.$('[href*="quote/subsidy?step=dependents"]')
@@ -32,7 +33,7 @@ function Filter(control) {
     
     function expandPane(pane) {
         return pane.isPresent().then(function (visible) {
-            return visible ? controls.pane.click().sleep(1000) : null
+            return visible ? pane.click().sleep(1000) : null
         })
     }
     ////// Location //////
@@ -89,6 +90,10 @@ function Filter(control) {
 
     self.expandCarrierFilter = function () {
         return expandPane(controls.carriersPane)
+    }
+    
+    self.minimizeCarrierFilter = function () {
+        return expandPane(controls.minimizeCarriersPane)
     }
 
     self.clickCarrier = function (namePattern) {
