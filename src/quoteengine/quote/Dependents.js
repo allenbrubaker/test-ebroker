@@ -4,31 +4,16 @@
     function Dependents(control) {
         var self = this
 
-        control = $('.modal-dialog');
         var controls = {
-            dependentsPane: $('.panel-primary-inner .fa-users + .fa-caret-right'),
-            editDependents: $('[href*="quote/subsidy?step=dependents"]'),
             dependents: control.all(by.repeater('dependent in dependents')),
             addDependent: control.$('a[ng-click ^= addDependent]'),
             remove: control.all(by.css('[ng-click^=removeDependent]')),
             closeModal: control.$('[ng-click^=ok]'),
-            quote: $('a[ng-click ^= toQuote]'),
-            
         }
 
         self.load = function () {
             browser.get('/')
             self.clearZip()
-        }
-
-        self.expandPane = function () {
-            return controls.dependentsPane.isPresent().then(function (visible) {
-                return visible ? controls.dependentsPane.click().sleep(1000) : null
-            })
-        }
-
-        self.edit = function () {
-            return controls.editDependents.click().sleep(2000)
         }
 
         self.addSelf = function (isMale, dob, isTobaccoUse) {
@@ -66,10 +51,6 @@
                 var control = controls.dependents.get(count - 1)
                 return new Dependent(control, relationship, isMale, dob, isTobaccoUse)
             })
-        }
-
-        self.quote = function () {
-            return controls.quote.click()
         }
 
         self.closeModal = function () {

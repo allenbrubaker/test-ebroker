@@ -12,15 +12,15 @@ describe('home:', function () {
     });
 
     it('entering zip code displays single county', function () {
-        home.enterZip('17012');
-        home.assertCountyCount(1);
+        home.location.enterZip('17012');
+        home.location.assertCountyCount(1);
     })
 
     it('entering zip code displays multiple counties', function () {
-        home.enterZip('17055');
-        home.assertCountyCount(2);
-        home.assertCountyName(0, /Cumberland/);
-        home.assertCountyName(1, /York/);
+        home.location.enterZip('17055');
+        home.location.assertCountyCount(2);
+        home.location.assertCountyName(0, /Cumberland/);
+        home.location.assertCountyName(1, /York/);
     });
 
     it('with required fields returns medical quote', function () {
@@ -28,28 +28,28 @@ describe('home:', function () {
     });
 
     it('with spouse and child dependency fields returns medical quote', function () {
-        home.enterZip('17055');
-        home.selectCounty();
+        home.location.enterZip('17055');
+        home.location.selectCounty();
         
-        home.addSelf(true, dob, false);
-        home.addSpouse(false, dob, true);
-        home.addChild(true, dob, false);
+        home.dependents.addSelf(true, dob, false);
+        home.dependents.addSpouse(false, dob, true);
+        home.dependents.addChild(true, dob, false);
         
         home.quote();
     });
     
     it('allows addition and deletion of dependents', function () {
-        home.enterZip('17012');
-        home.addSelf();
-        home.assertDependentsCount(1);
-        home.addSpouse();
-        home.assertDependentsCount(2);
-        home.addChild();
-        home.assertDependentsCount(3);
-        home.removeDependent();
-        home.assertDependentsCount(2);
-        home.removeDependent();
-        home.assertDependentsCount(1);
+        home.location.enterZip('17012');
+        home.dependents.addSelf();
+        home.dependents.assertDependentsCount(1);
+        home.dependents.addSpouse();
+        home.dependents.assertDependentsCount(2);
+        home.dependents.addChild();
+        home.dependents.assertDependentsCount(3);
+        home.dependents.removeDependent();
+        home.dependents.assertDependentsCount(2);
+        home.dependents.removeDependent();
+        home.dependents.assertDependentsCount(1);
     });
 
 });

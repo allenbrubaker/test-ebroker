@@ -182,8 +182,8 @@ describe('quote:', function () {
         })
 
         it('entering zip code displays single county', function () {
-            return l.expandLocationPane()
-                .then(l.editLocation)
+            return quote.filter.expandLocationPane()
+                .then(quote.filter.editLocation)
                 .then(l.clearZip)
                 .then(function () {
                     return l.enterZip('17012')
@@ -206,7 +206,7 @@ describe('quote:', function () {
         })
     })
 
-    describe('dependents:', function () {
+    describe.only('dependents:', function () {
         var d, dob
         before(function () {
             d = quote.dependents
@@ -214,7 +214,7 @@ describe('quote:', function () {
         })
         
         beforeEach(function () {
-            return d.expandPane().then(d.edit);
+            return quote.filter.expandDependentsPane().then(quote.filter.editDependents);
         })
         
         afterEach(function() {return d.closeModal() })

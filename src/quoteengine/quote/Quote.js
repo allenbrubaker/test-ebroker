@@ -19,6 +19,7 @@
             plans: element.all(by.repeater('plan in plans')),
             filter: $('[ng-controller = filterController'),
             comparePlans: $('[ui-sref^="quote.compare"]'),
+            dependentsModal: $('.modal-dialog')
         }
 
         self.plans = function () {
@@ -34,7 +35,7 @@
         self.sort = new Sort();
         self.taxCredit = new TaxCredit();
         self.location = new Location();
-        self.dependents = new Dependents();
+        self.dependents = new Dependents(controls.dependentsModal);
 
         self.load = function () {
             browser.driver.manage().window().maximize() // needed for sliders to function correctly.
