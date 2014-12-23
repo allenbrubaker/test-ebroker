@@ -1,139 +1,139 @@
 (function () {
-    module.exports = Home;
+    module.exports = Dependents
 
-    function Dependents() {
-        var self = this;
+    function Dependents(control) {
+        var self = this
 
+        control = $('.modal-dialog');
         var controls = {
-            dependentsPane: $('.panel-primary-inner .fa-users'),
-            editDependents: $('[ui-sref^="quote.subsidy"]'),
-            dependents: element.all(by.repeater('dependent in dependents')),
-            addDependent: element(by.css('a[ng-click ^= addDependent]')),
-            close: $('[ng-click^=ok]'),
-            quote: element(by.css('a[ng-click ^= toQuote]')),
+            dependentsPane: $('.panel-primary-inner .fa-users + .fa-caret-right'),
+            editDependents: $('[href*="quote/subsidy?step=dependents"]'),
+            dependents: control.all(by.repeater('dependent in dependents')),
+            addDependent: control.$('a[ng-click ^= addDependent]'),
+            remove: control.all(by.css('[ng-click^=removeDependent]')),
+            closeModal: control.$('[ng-click^=ok]'),
+            quote: $('a[ng-click ^= toQuote]'),
+            
         }
 
         self.load = function () {
-            browser.get('/');
-            self.clearZip();
+            browser.get('/')
+            self.clearZip()
         }
 
-        self.expandDependentsPane = function() { return controls.dependentsPane.click().sleep(1000) }
-        self.editDependents = function() { return controls.editDependents.click().sleep(2000)}
-        
-        ///// Dependents //////
+        self.expandPane = function () {
+            return controls.dependentsPane.isPresent().then(function (visible) {
+                return visible ? controls.dependentsPane.click().sleep(1000) : null
+            })
+        }
 
-        self.dependents = [];
+        self.edit = function () {
+            return controls.editDependents.click().sleep(2000)
+        }
 
-        self.addSelf = function(isMale, dob, isTobaccoUse) {
-            addDependent('You', isMale, dob, isTobaccoUse);
+        self.addSelf = function (isMale, dob, isTobaccoUse) {
+            return addDependent('You', isMale, dob, isTobaccoUse)
         }
 
         self.addSpouse = function (isMale, dob, isTobaccoUse) {
-            addDependent('Spouse', isMale, dob, isTobaccoUse);
+            return addDependent('Spouse', isMale, dob, isTobaccoUse)
         }
 
         self.addChild = function (isMale, dob, isTobaccoUse) {
-            addDependent('Child', isMale, dob, isTobaccoUse);
+            return addDependent('Child', isMale, dob, isTobaccoUse)
         }
 
         self.removeDependent = function (index) {
-            if (index == null)
-                index = self.dependents.length - 1;
-            if (index == 0)
-                return; // cannot remove self dependent.
-            self.dependents[index].remove();
-            self.dependents.splice(index, 1);
+            return controls.dependents.count().then(function (c) {
+                if (index == null)
+                    index = c - 1;
+                if (index == 0)
+                    return // cannot remove self dependent.
+                return controls.remove.get(index).click().sleep(1000)
+            })
         }
 
         self.assertDependentsCount = function (count) {
-            controls.dependents.count().should.eventually.equal(count);
-            self.dependents.length.should.equal(count);
+            return controls.dependents.count().should.eventually.equal(count)
         }
 
         function addDependent(relationship, isMale, dob, isTobaccoUse) {
-            if (self.dependents.length == 0)
-                relationship = 'You';
-            else
-                controls.addDependent.click();
-            var control = dependentControl(self.dependents.length);
-            var dependent = new Dependent(control, relationship, isMale, dob, isTobaccoUse);
-            self.dependents.push(dependent);
-            return dependent;
+            return controls.dependents.count().then(function (count) {
+                if (!relationship.match(/you/i)) {
+                    controls.addDependent.click().sleep(1000)
+                    ++count
+                }
+                var control = controls.dependents.get(count - 1)
+                return new Dependent(control, relationship, isMale, dob, isTobaccoUse)
+            })
         }
 
-        function dependentControl(index) {
-            index = index || 0;
-            return controls.dependents.get(index);
-        }
-
-        ////// Quote //////
         self.quote = function () {
-            controls.quote.click();
+            return controls.quote.click()
+        }
+
+        self.closeModal = function () {
+            return controls.closeModal.click().sleep(5000);
         }
     }
 
     function Dependent(control, relationship, isMale, dob, isTobaccoUse) {
         this.controls = new(function () {
-            this.relations = control.all(by.css('[ng-options *= getRelationships] option'));
-            this.child = this.relations.get(1);
-            this.spouse = this.relations.get(2);
-            this.male = control.element(by.css('.fa-male'));
-            this.female = control.element(by.css('.fa-female'));
-            this.dob = control.element(by.model('dependent.dob'));
-            this.tobacco = control.element(by.css('.fa-check'));
-            this.noTobacco = control.element(by.css('.fa-ban'));
-            this.remove = control.element(by.css('.fa-times'));
-        });
+            this.relations = control.all(by.css('[ng-options *= getRelationships] option'))
+            this.child = this.relations.get(1)
+            this.spouse = this.relations.get(2)
+            this.male = control.$('.fa-male')
+            this.female = control.$('.fa-female')
+            this.dob = control.element(by.model('dependent.dob'))
+            this.tobacco = control.$('.fa-check')
+            this.noTobacco = control.$('.fa-ban')
+        })
 
-        this.relationship = relationship;
-        this.isMale = isMale == null ? true : isMale;
-        this.dob = dob || '';
-        this.isTobaccoUse = isTobaccoUse == null ? false : isTobaccoUse;
-
+        this.relationship = relationship
+        this.isMale = isMale == null ? true : isMale
+        this.dob = dob || ''
+        this.isTobaccoUse = isTobaccoUse == null ? false : isTobaccoUse
     }
 
     Dependent.prototype = {
         get relationship() {
-            return this._relationship;
+            return this._relationship
         },
         set relationship(r) {
-            this._relationship = r;
+            this._relationship = r
             if (r.match(/child/i))
-                this.controls.child.click();
+                this.controls.child.click()
             else if (r.match(/spouse/i))
-                this.controls.spouse.click();
+                this.controls.spouse.click()
         },
         get isMale() {
-            return this._isMale;
+            return this._isMale
         },
         set isMale(m) {
-            this._isMale = m;
+            this._isMale = m
             if (m)
                 this.controls.male.click()
             else
-                this.controls.female.click();
+                this.controls.female.click()
         },
         get dob() {
-            return this._dob;
+            return this._dob
         },
         set dob(d) {
-            this._dob = d;
+            this._dob = d
+            this.controls.dob.clear();
             this.controls.dob.sendKeys(d);
         },
         get isTobaccoUse() {
-            return this._isTobaccoUse;
+            return this._isTobaccoUse
         },
         set isTobaccoUse(t) {
-            this._isTobaccoUse = t;
+            this._isTobaccoUse = t
             if (t)
-                this.controls.tobacco.click();
+                this.controls.tobacco.click()
             else
-                this.controls.noTobacco.click();
-        },
-        remove: function () {
-            this.controls.remove.click();
+                this.controls.noTobacco.click()
         }
     }
 
-})();
+})()

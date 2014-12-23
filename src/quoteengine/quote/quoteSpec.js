@@ -207,29 +207,35 @@ describe('quote:', function () {
     })
 
     describe('dependents:', function () {
-        var d
+        var d, dob
         before(function () {
             d = quote.dependents
+            dob = '07/06/1986'
         })
+        
+        beforeEach(function () {
+            return d.expandPane().then(d.edit);
+        })
+        
+        afterEach(function() {return d.closeModal() })
 
         it('with required fields returns medical quote', function () {
-            d.addSelf(true, '07/06/1986', false)
-                .then(d.quote)
+            return d.addSelf(true, dob, false)
         })
 
         it('with spouse and child dependency fields returns medical quote', function () {
-            d.addSelf(true, dob, false)
+            return d.addSelf(true, dob, false)
                 .then(function () {
                     return d.addSpouse(false, dob, true)
                 })
                 .then(function () {
                     return d.addChild(true, dob, false)
                 })
-                .then(d.quote)
+                .then(function() {return d.removeDependent()}).then(function() {d.removeDependent()});
         })
 
         it('allows addition and deletion of dependents', function () {
-            d.addSelf()
+            return d.addSelf(true, dob, false)
                 .then(function () {
                     return d.assertDependentsCount(1)
                 })
