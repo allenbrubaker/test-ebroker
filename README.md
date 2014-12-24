@@ -69,7 +69,7 @@ Application
 - [ ] Verify payment
 - [ ] Verify Check Out
 - [ ] Verify Application Options at top (dropdown)
-- 
+
 **Applications Tab**
 - [ ] Verify display of record
 - [ ] Select Plans button for record, verify contents
