@@ -24,12 +24,8 @@ npm install
 npm test
 ```
 
-Quote Engine Basic Acceptance Tests
-======================================
 
-
-
-Quote Engine Tests
+Quote Engine
 =======================
 
 **Plan Page**
@@ -61,7 +57,7 @@ Quote Engine Tests
 - [x] TestComparison - Verify that a user is able to select 2 plans to compare
 
 
-Application Tests
+Application
 ======================
 
 **Application**	
@@ -100,7 +96,7 @@ Application Tests
 - [ ] Verify Filter application works
 
 
-Integration Tests (quote engine/application)
+Integration (quote engine/application)
 =================================================
 - [ ] TestLogin - Verify that a user is able to select a plan, checkout, select an agent and login to Agency Central
 - [ ] TestSaveApplicationandLogout - Verify that a user is able to go through the process of selecting a plan, checking out, logging in to Agency Central and Saving the application that they just started and Logout
@@ -108,19 +104,14 @@ Integration Tests (quote engine/application)
 - [ ] TestSaveQuote - Verify that a user is able to select a plan, login and save that quote
 - [ ] TestUserRegistration - Verify that a user is able to select a plan and then register on Agency Central as a new user
 
-Scenario Tests
+
+Scenarios
 ===================
 - [ ] As a user, I'd like to be able to receive a quote for Medical Insurance for myself, my husband and 10 year old dependent. I'd like to be able to save that quote for later viewing.
-
 - [ ] As a user I'd like to compare quotes for 3 different medical plans for myself and my husband. I'd like to save that comparison for later viewing. 
-
 - [ ] Get a quote and choose to checkout. Using existing account to log in on testapplication, verfiy that when the Demographics section shows, the first name, last name and date of birth are prefilled.
-
 - [ ] Verify that from the shopping cart in Quote Engine, a user is able to click the back button that is shown above the plan information and is taken back the the plans page.
-
 - [ ] Verify that after saving a comparison the Back to Quotes button shows and is able to be click and return the user to the quote engine
-
 - [ ] Verify that the Instant Quote button is not enabled until after the Date of Birth field is filled in
-
 - [ ] Verify that a user is able to use the Cancel button from the select agent page after getting a quote, and selecting Save Quote
 
