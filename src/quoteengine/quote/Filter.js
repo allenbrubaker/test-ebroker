@@ -131,7 +131,7 @@ function Filter(control) {
     }
 
     self.clickShowOnlyHsa = function () {
-        return controls.showOnlyHsa.click().sleep(4000)
+        return controls.showOnlyHsa.click().sleep(5000)
     }
 
     self.clickMarketplacePlans = function () {
