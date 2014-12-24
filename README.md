@@ -27,23 +27,12 @@ npm test
 Quote Engine Basic Acceptance Tests
 ======================================
 
-- [x] TestHealthInsuranceQuote - Verify that Health Insurance plans show when entering zipcode & dependent information
 
-
-- [x] TestPlanInfo - Verify that a user is able to enter a zip, get an instant quote and click the Plan Info button that will display information for that plan
-
-
-- [x] TestTaxCreditQualification - Verify that a user is able to click the Qualify for Tex Credit button, enter data, receive tax credit information and that information displays within the plan information area
-
-
-- [x] TestLogin - Verify that a user is able to select a plan, checkout, select an agent
-
-
-- [x] TestComparison - Verify that a user is able to select 2 plans to compare
 
 Quote Engine Tests
 =======================
-Plan Page
+
+**Plan Page**
 - [x] Plans display
 - [x] Ability to compare up to 8 plans
 - [x] Ability to select plan info button
@@ -52,48 +41,63 @@ Plan Page
 - [x] Ability to Find out Now for Tax Credit
 - [x] Ability to Edit dependants
 - [x] Ability to Set the location & Edit
-Filters
-	- [x] Price
-	- [x] Carriers
-	- [x] Plan Type
-	- [x] Metal Type
+
+**Filters**
+- [x] Price
+- [x] Carriers
+- [x] Plan Type
+- [x] Metal Type
 - [x] Insurance Type check boxes
+
+**Other**
 - [ ] Click on Disclaimer
 - [ ] Click on Metal Levels Info
 
+**Acceptance Tests**
+- [x] TestHealthInsuranceQuote - Verify that Health Insurance plans show when entering zipcode & dependent information
+- [x] TestPlanInfo - Verify that a user is able to enter a zip, get an instant quote and click the Plan Info button that will display information for that plan
+- [x] TestTaxCreditQualification - Verify that a user is able to click the Qualify for Tex Credit button, enter data, receive tax credit information and that information displays within the plan information area
+- [x] TestLogin - Verify that a user is able to select a plan, checkout, select an agent
+- [x] TestComparison - Verify that a user is able to select 2 plans to compare
+
+
 Application Tests
 ======================
-Applications Tab
-	- [ ] Verify display of record
-	- [ ] Select Plans button for record, verify contents
-	- [ ] Select Effective Dates button for record, verify contents
-	- [ ] Continue Button -> Takes user to application setup flow
-	- [ ] Cancel Application Button -> Confirm ability to cancel application
-Comparisons Tab	
-	- [ ] Verify display of record
-	- [ ] Select Plans button for record, verify contents
-	- [ ] Select View Current Comparison button, verify contents
-	- [ ] Delete Comparison
-Quotes
-	- [ ] Verify Display of Record
-	- [ ] Verify Plans button for record, verify contents
-	- [ ] Verify Dependants button for record, verify contents
-	- [ ] Verify Buy Now button
-	- [ ] Verify ability to delete Quote
 
+**Application**	
+- [ ] Verify ability to navigate the application by clicking on the different sections at top (Demographics,Dependants,Carrier Info, etc)
+- [ ] Verify Demographics tab, entering data
+- [ ] Verify adding/removing Dependants & view existing dependants
+- [ ] Verify Carrier Info tab -> 	yes/no question
+- [ ] Verify effective date
+- [ ] Verify payment
+- [ ] Verify Check Out
+- [ ] Verify Application Options at top (dropdown)
+- 
+**Applications Tab**
+- [ ] Verify display of record
+- [ ] Select Plans button for record, verify contents
+- [ ] Select Effective Dates button for record, verify contents
+- [ ] Continue Button -> Takes user to application setup flow
+- [ ] Cancel Application Button -> Confirm ability to cancel application
+
+**Comparisons Tab**
+- [ ] Verify display of record
+- [ ] Select Plans button for record, verify contents
+- [ ] Select View Current Comparison button, verify contents
+- [ ] Delete Comparison
+
+**Quotes**
+- [ ] Verify Display of Record
+- [ ] Verify Plans button for record, verify contents
+- [ ] Verify Dependants button for record, verify contents
+- [ ] Verify Buy Now button
+- [ ] Verify ability to delete Quote
+
+**Other**
 - [ ] Verify Back to Quotes button -> takes user back to quote engine
 - [ ] Verify Logout button
 - [ ] Verify Filter application works
-
-Application	
-	- [ ] Verify ability to navigate the application by clicking on the different sections at top (Demographics,Dependants,Carrier Info, etc)
-	- [ ] Verify Demographics tab, entering data
-	- [ ] Verify adding/removing Dependants & view existing dependants
-	- [ ] Verify Carrier Info tab -> 	yes/no question
-	- [ ] Verify effective date
-	- [ ] Verify payment
-	- [ ] Verify Check Out
-- [ ] Verify Application Options at top (dropdown)
 
 
 Integration Tests (quote engine/application)
