@@ -33,43 +33,36 @@ Quote Engine Basic Acceptance Tests
 - [x] TestPlanInfo - Verify that a user is able to enter a zip, get an instant quote and click the Plan Info button that will display information for that plan
 
 
-- [ ] TestTaxCreditQualification - Verify that a user is able to click the Qualify for Tex Credit button, enter data, receive tax credit information and that information displays within the plan information area
+- [x] TestTaxCreditQualification - Verify that a user is able to click the Qualify for Tex Credit button, enter data, receive tax credit information and that information displays within the plan information area
 
 
-- [ ] TestLogin - Verify that a user is able to select a plan, checkout, select and agent and login to Agency Central
+- [x] TestLogin - Verify that a user is able to select a plan, checkout, select an agent
 
 
-- [ ] TestSaveApplicationandLogout - Verify that a user is able to go through the process of selecting a plan, checking out, logging in to Agency Central and Saving the application that they just started and Logout
+- [x] TestComparison - Verify that a user is able to select 2 plans to compare
 
-
-- [ ] TestSaveComparison - Verify that a user is able to select 2 plans to compare and then login to Agency Central and Save
-
-
-- [ ] TestSaveQuote - Verify that a user is able to select a plan, login and save that quote
-
-
-- [ ] TestUserRegistration - Verify that a user is able to select a plan and then register on Agency Central as a new user
-
-Quote Engine Tests:
+Quote Engine Tests
+=======================
 Plan Page
-- [ ] Plans display
-- [ ] Ability to compare up to 8 plans
-- [ ] Ability to select plan info button
-- [ ] Ability to select More info button
-- [ ] Ability to Sort plans
-- [ ] Ability to Find out Now for Tax Credit
-- [ ] Ability to Edit dependants
-- [ ] Ability to Set the location & Edit
+- [x] Plans display
+- [x] Ability to compare up to 8 plans
+- [x] Ability to select plan info button
+- [x] Ability to select More info button
+- [x] Ability to Sort plans
+- [x] Ability to Find out Now for Tax Credit
+- [x] Ability to Edit dependants
+- [x] Ability to Set the location & Edit
 Filters
-	- [ ] Price
-	- [ ] Carriers
-	- [ ] Plan Type
-	- [ ] Metal Type
-- [ ] Insurance Type check boxes
+	- [x] Price
+	- [x] Carriers
+	- [x] Plan Type
+	- [x] Metal Type
+- [x] Insurance Type check boxes
 - [ ] Click on Disclaimer
 - [ ] Click on Metal Levels Info
 
-Application Tests:
+Application Tests
+======================
 Applications Tab
 	- [ ] Verify display of record
 	- [ ] Select Plans button for record, verify contents
@@ -91,6 +84,7 @@ Quotes
 - [ ] Verify Back to Quotes button -> takes user back to quote engine
 - [ ] Verify Logout button
 - [ ] Verify Filter application works
+
 Application	
 	- [ ] Verify ability to navigate the application by clicking on the different sections at top (Demographics,Dependants,Carrier Info, etc)
 	- [ ] Verify Demographics tab, entering data
@@ -101,8 +95,17 @@ Application
 	- [ ] Verify Check Out
 - [ ] Verify Application Options at top (dropdown)
 
-Scenario Tests:
 
+Integration Tests (quote engine/application)
+=================================================
+- [ ] TestLogin - Verify that a user is able to select a plan, checkout, select an agent and login to Agency Central
+- [ ] TestSaveApplicationandLogout - Verify that a user is able to go through the process of selecting a plan, checking out, logging in to Agency Central and Saving the application that they just started and Logout
+- [ ] TestSaveComparison - Verify that a user is able to select 2 plans to compare and then login to Agency Central and Save
+- [ ] TestSaveQuote - Verify that a user is able to select a plan, login and save that quote
+- [ ] TestUserRegistration - Verify that a user is able to select a plan and then register on Agency Central as a new user
+
+Scenario Tests
+===================
 - [ ] As a user, I'd like to be able to receive a quote for Medical Insurance for myself, my husband and 10 year old dependent. I'd like to be able to save that quote for later viewing.
 
 - [ ] As a user I'd like to compare quotes for 3 different medical plans for myself and my husband. I'd like to save that comparison for later viewing. 
