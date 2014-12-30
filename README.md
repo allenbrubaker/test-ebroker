@@ -72,11 +72,13 @@ Application Tests
 - [ ] Select Effective Dates button for record, verify contents
 - [ ] Continue Button -> Takes user to application setup flow
 - [ ] Cancel Application Button -> Confirm ability to cancel application
+- 
 **Comparisons Tab**	
 - [ ] Verify display of record
 - [ ] Select Plans button for record, verify contents
 - [ ] Select View Current Comparison button, verify contents
 - [ ] Delete Comparison
+
 **Quotes**
 - [ ] Verify Display of Record
 - [ ] Verify Plans button for record, verify contents
@@ -101,6 +103,7 @@ Application Tests
 
 **Integration Tests (quote engine/application)**
 =================================================
+
 - [ ] TestLogin - Verify that a user is able to select a plan, checkout, select an agent and login to Agency Central
 - [ ] TestSaveApplicationandLogout - Verify that a user is able to go through the process of selecting a plan, checking out, logging in to Agency Central and Saving the application that they just started and Logout
 - [ ] TestSaveComparison - Verify that a user is able to select 2 plans to compare and then login to Agency Central and Save
@@ -109,6 +112,7 @@ Application Tests
 
 **Scenario Tests**
 ===================
+
 - [ ] As a user, I'd like to be able to receive a quote for Medical Insurance for myself, my husband and 10 year old dependent. I'd like to be able to save that quote for later viewing.
 
 - [ ] As a user I'd like to compare quotes for 3 different medical plans for myself and my husband. I'd like to save that comparison for later viewing. 
