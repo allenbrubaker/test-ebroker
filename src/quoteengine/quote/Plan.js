@@ -60,7 +60,7 @@ function Plan(control) {
         }
 
         self.showMore = function () {
-            return controls.showMore.click()
+            return controls.showMore.click().sleep(1000);
         }
 
         self.showPlanInfo = function () {

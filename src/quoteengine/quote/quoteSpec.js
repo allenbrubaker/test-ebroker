@@ -78,12 +78,18 @@ describe('quote:', function () {
 			quote.filter.expandMetalTypeInfo()
 				.then(quote.filter.metalTypeInfoText)
 				.then(function (info) {
-					var match = info.match(/platinum/i)!=null && info.match(/gold/i)!=null && info.match(/silver/i)!=null && info.match(/bronze/i)!=null
+					var match = info.match(/platinum/i) != null && info.match(/gold/i) != null && info.match(/silver/i) != null && info.match(/bronze/i) != null
 					match.should.be.true;
 					return match;
 				})
 		})
 
+	})
+	
+	describe('plan:', function() {
+		it('ability to select more info button', function() {
+			quote.plans().first().call('showMore')
+		})
 	})
 
 	describe("sort:", function () {
@@ -131,7 +137,7 @@ describe('quote:', function () {
 			})
 		})
 
-		it('comparing plans displays details for each plan on compare page', function () {
+		it('clicking compare checkbox on each displays details for each selected plan on compare page', function () {
 			quote.plans().take(2).map(function (p) {
 				return p.clickCompare().then(function () {
 					return Promise.props({
