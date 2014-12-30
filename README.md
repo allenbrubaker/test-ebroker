@@ -43,7 +43,8 @@ Quote Engine Basic Acceptance Tests
 
 Quote Engine Tests
 =======================
-Plan Page
+
+**Plan Page**
 - [x] Plans display
 - [x] Ability to compare up to 8 plans
 - [x] Ability to select plan info button
@@ -52,51 +53,53 @@ Plan Page
 - [x] Ability to Find out Now for Tax Credit
 - [x] Ability to Edit dependants
 - [x] Ability to Set the location & Edit
-Filters
-	- [x] Price
-	- [x] Carriers
-	- [x] Plan Type
-	- [x] Metal Type
+
+**Filters**
+- [x] Price
+- [x] Carriers
+- [x] Plan Type
+- [x] Metal Type
 - [x] Insurance Type check boxes
 - [ ] Click on Disclaimer
 - [ ] Click on Metal Levels Info
 
 Application Tests
 ======================
-Applications Tab
-	- [ ] Verify display of record
-	- [ ] Select Plans button for record, verify contents
-	- [ ] Select Effective Dates button for record, verify contents
-	- [ ] Continue Button -> Takes user to application setup flow
-	- [ ] Cancel Application Button -> Confirm ability to cancel application
-Comparisons Tab	
-	- [ ] Verify display of record
-	- [ ] Select Plans button for record, verify contents
-	- [ ] Select View Current Comparison button, verify contents
-	- [ ] Delete Comparison
-Quotes
-	- [ ] Verify Display of Record
-	- [ ] Verify Plans button for record, verify contents
-	- [ ] Verify Dependants button for record, verify contents
-	- [ ] Verify Buy Now button
-	- [ ] Verify ability to delete Quote
+
+**Applications Tab**
+- [ ] Verify display of record
+- [ ] Select Plans button for record, verify contents
+- [ ] Select Effective Dates button for record, verify contents
+- [ ] Continue Button -> Takes user to application setup flow
+- [ ] Cancel Application Button -> Confirm ability to cancel application
+**Comparisons Tab**	
+- [ ] Verify display of record
+- [ ] Select Plans button for record, verify contents
+- [ ] Select View Current Comparison button, verify contents
+- [ ] Delete Comparison
+**Quotes**
+- [ ] Verify Display of Record
+- [ ] Verify Plans button for record, verify contents
+- [ ] Verify Dependants button for record, verify contents
+- [ ] Verify Buy Now button
+- [ ] Verify ability to delete Quote
 
 - [ ] Verify Back to Quotes button -> takes user back to quote engine
 - [ ] Verify Logout button
 - [ ] Verify Filter application works
 
-Application	
-	- [ ] Verify ability to navigate the application by clicking on the different sections at top (Demographics,Dependants,Carrier Info, etc)
-	- [ ] Verify Demographics tab, entering data
-	- [ ] Verify adding/removing Dependants & view existing dependants
-	- [ ] Verify Carrier Info tab -> 	yes/no question
-	- [ ] Verify effective date
-	- [ ] Verify payment
-	- [ ] Verify Check Out
+**Application**	
+- [ ] Verify ability to navigate the application by clicking on the different sections at top (Demographics,Dependants,Carrier Info, etc)
+- [ ] Verify Demographics tab, entering data
+- [ ] Verify adding/removing Dependants & view existing dependants
+- [ ] Verify Carrier Info tab -> 	yes/no question
+- [ ] Verify effective date
+- [ ] Verify payment
+- [ ] Verify Check Out
 - [ ] Verify Application Options at top (dropdown)
 
 
-Integration Tests (quote engine/application)
+**Integration Tests (quote engine/application)**
 =================================================
 - [ ] TestLogin - Verify that a user is able to select a plan, checkout, select an agent and login to Agency Central
 - [ ] TestSaveApplicationandLogout - Verify that a user is able to go through the process of selecting a plan, checking out, logging in to Agency Central and Saving the application that they just started and Logout
@@ -104,7 +107,7 @@ Integration Tests (quote engine/application)
 - [ ] TestSaveQuote - Verify that a user is able to select a plan, login and save that quote
 - [ ] TestUserRegistration - Verify that a user is able to select a plan and then register on Agency Central as a new user
 
-Scenario Tests
+**Scenario Tests**
 ===================
 - [ ] As a user, I'd like to be able to receive a quote for Medical Insurance for myself, my husband and 10 year old dependent. I'd like to be able to save that quote for later viewing.
 
