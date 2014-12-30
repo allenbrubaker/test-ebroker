@@ -38,11 +38,9 @@
         self.dependents = new Dependents(controls.dependentsModal);
 
         self.load = function () {
-            browser.driver.manage().window().maximize() // needed for sliders to function correctly.
-            Home.login();
-            controls.modalClose.click();
-            browser.ignoreSynchronization = true;
-            browser.sleep(5000);
+			browser.ignoreSynchronization = true;
+			browser.driver.manage().window().maximize() // needed for sliders to function correctly.
+            return Home.login().then(controls.modalClose.click).sleep(5000)
         };
 
         self.closeModal = function () {

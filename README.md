@@ -24,25 +24,16 @@ npm install
 npm test
 ```
 
-Quote Engine Basic Acceptance Tests
-======================================
 
-- [x] TestHealthInsuranceQuote - Verify that Health Insurance plans show when entering zipcode & dependent information
-
-
-- [x] TestPlanInfo - Verify that a user is able to enter a zip, get an instant quote and click the Plan Info button that will display information for that plan
-
-
-- [x] TestTaxCreditQualification - Verify that a user is able to click the Qualify for Tex Credit button, enter data, receive tax credit information and that information displays within the plan information area
-
-
-- [x] TestLogin - Verify that a user is able to select a plan, checkout, select an agent
-
-
-- [x] TestComparison - Verify that a user is able to select 2 plans to compare
-
-Quote Engine Tests
+Quote Engine
 =======================
+
+**Acceptance**
+- [x] TestHealthInsuranceQuote - Verify that Health Insurance plans show when entering zipcode & dependent information
+- [x] TestPlanInfo - Verify that a user is able to enter a zip, get an instant quote and click the Plan Info button that will display information for that plan
+- [x] TestTaxCreditQualification - Verify that a user is able to click the Qualify for Tex Credit button, enter data, receive tax credit information and that information displays within the plan information area
+- [x] TestCheckout - Verify that a user is able to select a plan, the plan's content displays in the cart, and then clicking back button navigates back to list of plans.
+- [x] TestComparison - Verify that a user is able to select 2 plans to compare
 
 **Plan Page**
 - [x] Plans display
@@ -63,7 +54,14 @@ Quote Engine Tests
 - [x] Click on Disclaimer
 - [x] Click on Metal Levels Info
 
-Application Tests
+**Integration**
+- [x] TestCheckoutWithAgentAndLogin - Verify that a user is able to select a plan, checkout, select an agent and login to Agency Central
+- [ ] TestSaveApplicationandLogout - Verify that a user is able to go through the process of selecting a plan, checking out, logging in to Agency Central and Saving the application that they just started and Logout
+- [ ] TestSaveComparison - Verify that a user is able to select 2 plans to compare and then login to Agency Central and Save
+- [ ] TestSaveQuote - Verify that a user is able to select a plan, login and save that quote
+- [ ] TestUserRegistration - Verify that a user is able to select a plan and then register on Agency Central as a new user
+
+Application
 ======================
 
 **Applications Tab**
@@ -101,16 +99,8 @@ Application Tests
 - [ ] Verify Application Options at top (dropdown)
 
 
-**Integration Tests (quote engine/application)**
-=================================================
 
-- [ ] TestLogin - Verify that a user is able to select a plan, checkout, select an agent and login to Agency Central
-- [ ] TestSaveApplicationandLogout - Verify that a user is able to go through the process of selecting a plan, checking out, logging in to Agency Central and Saving the application that they just started and Logout
-- [ ] TestSaveComparison - Verify that a user is able to select 2 plans to compare and then login to Agency Central and Save
-- [ ] TestSaveQuote - Verify that a user is able to select a plan, login and save that quote
-- [ ] TestUserRegistration - Verify that a user is able to select a plan and then register on Agency Central as a new user
-
-**Scenario Tests**
+**Scenarios**
 ===================
 
 - [ ] As a user, I'd like to be able to receive a quote for Medical Insurance for myself, my husband and 10 year old dependent. I'd like to be able to save that quote for later viewing.
@@ -118,8 +108,6 @@ Application Tests
 - [ ] As a user I'd like to compare quotes for 3 different medical plans for myself and my husband. I'd like to save that comparison for later viewing. 
 
 - [ ] Get a quote and choose to checkout. Using existing account to log in on testapplication, verfiy that when the Demographics section shows, the first name, last name and date of birth are prefilled.
-
-- [ ] Verify that from the shopping cart in Quote Engine, a user is able to click the back button that is shown above the plan information and is taken back the the plans page.
 
 - [ ] Verify that after saving a comparison the Back to Quotes button shows and is able to be click and return the user to the quote engine
 

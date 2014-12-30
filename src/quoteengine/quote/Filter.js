@@ -37,7 +37,7 @@ function Filter(control) {
     
     function expandPane(pane) {
         return pane.isPresent().then(function (visible) {
-            return visible ? pane.click().sleep(1000) : null
+            return visible ? pane.click().sleep(1500) : null
         })
     }
     ////// Location //////
@@ -131,7 +131,7 @@ function Filter(control) {
     ////////// Plan Type ///////////
 
     self.expandPlanTypeFilter = function () {
-        return expandPane(controls.planTypePane).sleep(1000)
+        return expandPane(controls.planTypePane)
     }
 
     self.clickShowOnlyHsa = function () {
@@ -167,7 +167,7 @@ function Filter(control) {
 	/////////// Disclaimer //////////////
 	
 	self.expandDisclaimer = function () {
-		return controls.disclaimerPane.click().sleep(1000);
+		return expandPane(controls.disclaimerPane)
 	}
 	
 	self.disclaimerText = function () {
@@ -177,7 +177,7 @@ function Filter(control) {
 	//////////// Metal Levels Info /////////////
 
 	self.expandMetalTypeInfo = function () {
-		return controls.metalTypeInfoPane.click().sleep(1000);
+		return expandPane(controls.metalTypeInfoPane)
 	}
 
 	self.metalTypeInfoText = function () {

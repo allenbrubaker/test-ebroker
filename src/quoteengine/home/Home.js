@@ -17,8 +17,7 @@
         self.dependents = new Dependents(controls.dependentsContainer);
 
         self.load = function () {
-            browser.get('/');
-            self.location.clearZip();
+            return browser.get('/').sleep(3000).then(self.location.clearZip);
         }
 
         self.quote = function () {
@@ -29,10 +28,11 @@
     Home.login = function(zip) {
         zip = zip || '17012';
         var home = new Home();
-        home.load();
-        home.location.enterZip(zip);
-        home.dependents.addSelf(true, '07/06/1986', false);
-        home.quote();
+        return home.load()
+        .then(function () { return home.location.enterZip(zip) })
+        .then(function() { return home.dependents.addSelf(true, '07/06/1986', false) })
+        .then(home.quote)
+		.sleep(5000)
     }
 
 })();

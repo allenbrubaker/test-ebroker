@@ -1,5 +1,21 @@
 var Quote = require('./Quote')
 
+
+//describe('application:', function () {
+//	this.timeout(99999)
+//
+//	var quote;
+//	before(function () {
+//		quote = new Quote()
+//		//quote.load()
+//		return browser.get('https://testapplication.ioixsoftware.com/account#!/applications').sleep(3000)
+//	})
+//
+//	it.only('login', function () {
+//		return quote.cart.login()
+//	})
+//})
+
 describe('quote:', function () {
 
 	this.timeout(99999)
@@ -85,9 +101,9 @@ describe('quote:', function () {
 		})
 
 	})
-	
-	describe('plan:', function() {
-		it('ability to select more info button', function() {
+
+	describe('plan:', function () {
+		it('ability to select more info button', function () {
 			quote.plans().first().call('showMore')
 		})
 	})
@@ -180,7 +196,7 @@ describe('quote:', function () {
 				}).then(quote.cart.clickBack);
 		})
 
-		it('selecting a plan can be checked out with an agent selected', function () {
+		it('checkout plan with an agent and login into agency central', function () {
 			Promise.resolve(quote.filter.expandPlanTypeFilter())
 				.then(quote.filter.clickMarketplacePlans)
 				.then(quote.plans)
@@ -190,11 +206,10 @@ describe('quote:', function () {
 				.then(quote.cart.agents)
 				.first()
 				.call('select')
-				.then(function () {
-					return browser.get('/')
-				}).delay(3000)
+				.then(quote.cart.login)
 				.then(quote.load)
 		})
+
 
 	})
 
