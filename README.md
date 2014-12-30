@@ -72,7 +72,7 @@ Application Tests
 - [ ] Select Effective Dates button for record, verify contents
 - [ ] Continue Button -> Takes user to application setup flow
 - [ ] Cancel Application Button -> Confirm ability to cancel application
-- 
+
 **Comparisons Tab**	
 - [ ] Verify display of record
 - [ ] Select Plans button for record, verify contents
