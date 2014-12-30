@@ -64,6 +64,26 @@ describe('quote:', function () {
 			})
 		})
 
+		it('disclaimer visible on expanding disclaimer pane', function () {
+			quote.filter.expandDisclaimer()
+				.then(quote.filter.disclaimerText)
+				.then(function (disclaimer) {
+					var match = disclaimer.match(/In offering this website, eBroker is required to comply with all applicable federal laws/i)
+					match.should.be.truthy;
+					return match;
+				})
+		})
+
+		it('metal levels info visible on expanding metal info pane', function () {
+			quote.filter.expandMetalTypeInfo()
+				.then(quote.filter.metalTypeInfoText)
+				.then(function (info) {
+					var match = info.match(/platinum/i)!=null && info.match(/gold/i)!=null && info.match(/silver/i)!=null && info.match(/bronze/i)!=null
+					match.should.be.true;
+					return match;
+				})
+		})
+
 	})
 
 	describe("sort:", function () {

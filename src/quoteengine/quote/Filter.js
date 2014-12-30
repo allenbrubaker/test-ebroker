@@ -27,7 +27,11 @@ function Filter(control) {
         locationPane: control.$('.panel-primary-inner .fa-globe'),
         editLocation: control.$('[ng-click^=locationUpdate]'),
         dependentsPane: control.$('.panel-primary-inner .fa-users + .fa-caret-right'),
-        editDependents: control.$('[href*="quote/subsidy?step=dependents"]')
+        editDependents: control.$('[href*="quote/subsidy?step=dependents"]'),
+		disclaimerPane: control.$('.panel-heading .fa-info-circle + .fa-caret-right'),
+		disclaimer: control.$('.panel[is-open=disclaimerOpen]'),
+		metalTypeInfo: control.$('.panel[is-open=metalInfo]'),
+		metalTypeInfoPane: control.$('.panel[is-open=metalInfo] .panel-heading')
     }
 
     
@@ -159,6 +163,24 @@ function Filter(control) {
             return browser.sleep(6000)
         })
     }
+	
+	/////////// Disclaimer //////////////
+	
+	self.expandDisclaimer = function () {
+		return controls.disclaimerPane.click().sleep(1000);
+	}
+	
+	self.disclaimerText = function () {
+		return controls.disclaimer.getText();
+	}
+	
+	//////////// Metal Levels Info /////////////
 
+	self.expandMetalTypeInfo = function () {
+		return controls.metalTypeInfoPane.click().sleep(1000);
+	}
 
+	self.metalTypeInfoText = function () {
+		return controls.metalTypeInfo.getText();
+	}
 }
