@@ -1,18 +1,18 @@
 (function () {
 
-    var Home = require('../home/Home');
-    var Cart = require('./Cart');
-    var Plan = require('./Plan');
-    var Filter = require('./Filter');
-    var TaxCredit = require('./TaxCredit');
-    var Sort = require('./Sort');
-    var Location = require('./Location');
-    var Dependents = require('./Dependents');
+    var Home = require('../home/Home')
+    var Cart = require('./Cart')
+    var Plan = require('./Plan')
+    var Filter = require('./Filter')
+    var TaxCredit = require('./TaxCredit')
+    var Sort = require('./Sort')
+    var Location = require('./Location')
+    var Dependents = require('./Dependents')
 
-    module.exports = Quote;
+    module.exports = Quote
 
     function Quote() {
-        var self = this;
+        var self = this
 
         var controls = {
             modalClose: $('.modal-dialog [ng-click ^= cancel]'),
@@ -24,27 +24,39 @@
 
         self.plans = function () {
             var plans = controls.plans.map(function (control) {
-                return new Plan(control);
-            });
-            return Promise.resolve(plans);
+                return new Plan(control)
+            })
+            return Promise.resolve(plans)
         }
 
-        self.filter = new Filter(controls.filter);
-        self.cart = new Cart();
-        self.compare = new Cart(null, 'plan');
-        self.sort = new Sort();
-        self.taxCredit = new TaxCredit();
-        self.location = new Location();
-        self.dependents = new Dependents(controls.dependentsModal);
+        self.checkout = function() {
+            return Promise.resolve(self.filter.expandPlanTypeFilter())
+                .then(self.filter.clickMarketplacePlans)
+                .then(self.plans)
+                .first()
+                .call('select')
+                .then(self.cart.checkout)
+                .then(self.cart.agents)
+                .first()
+                .call('select')
+        }
+        
+        self.filter = new Filter(controls.filter)
+        self.cart = new Cart()
+        self.compare = new Cart(null, 'plan')
+        self.sort = new Sort()
+        self.taxCredit = new TaxCredit()
+        self.location = new Location()
+        self.dependents = new Dependents(controls.dependentsModal)
 
         self.load = function () {
-			browser.ignoreSynchronization = true;
+			browser.ignoreSynchronization = true
 			browser.driver.manage().window().maximize() // needed for sliders to function correctly.
             return Home.login().then(controls.modalClose.click).sleep(5000)
-        };
+        }
 
         self.closeModal = function () {
-            return controls.modalClose.click();
+            return controls.modalClose.click()
         }
 
         self.allPremiumsAtMostFilter = function () {
@@ -52,7 +64,7 @@
                 return self.plans().every(function (plan) {
                     return plan.premium().then(function (p) {
                         return p <= max
-                    });
+                    })
                 })
             })
         }
@@ -62,7 +74,7 @@
                 return self.plans().every(function (plan) {
                     return plan.deductible().then(function (d) {
                         return d <= max
-                    });
+                    })
                 })
             })
         }
@@ -70,44 +82,44 @@
         self.allCarriersNotDisplaying = function (logoName) {
             return self.plans().every(function (plan) {
                 return plan.carrier().then(function (carrier) {
-                    return carrier.toLowerCase() != logoName.toLowerCase();
-                });
-            });
+                    return carrier.toLowerCase() != logoName.toLowerCase()
+                })
+            })
         }
 
         self.allMetalTypesNotDisplaying = function (metalType) {
             return self.plans().every(function (plan) {
                 return plan.metal().then(function (x) {
-                    return x.toLowerCase() != metalType.toLowerCase();
-                });
-            });
+                    return x.toLowerCase() != metalType.toLowerCase()
+                })
+            })
         }
 
         self.allHsaEligible = function () {
             return self.plans().every(function (plan) {
-                return plan.isHsaEligible();
-            });
+                return plan.isHsaEligible()
+            })
         }
 
         self.isSorted = function (getValue, isAscending) {
             return self.plans().reduce(function (acc, plan) {
                 return getValue(plan).then(function (p) {
-                    acc.passes = acc.passes && (isAscending ? acc.value <= p : acc.value >= p);
-                    acc.value = p;
-                    return acc;
-                });
+                    acc.passes = acc.passes && (isAscending ? acc.value <= p : acc.value >= p)
+                    acc.value = p
+                    return acc
+                })
             }, {
                 passes: true,
                 value: isAscending ? -99999 : 99999
             }).then(function (acc) {
-                return acc.passes;
-            });
+                return acc.passes
+            })
         }
 
         self.clickComparePlans = function () {
-            return controls.comparePlans.click().sleep(4000);
+            return controls.comparePlans.click().sleep(4000)
         }
 
     }
 
-})();
+})()

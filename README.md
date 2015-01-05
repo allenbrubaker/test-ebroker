@@ -56,7 +56,7 @@ Quote Engine
 
 **Integration**
 - [x] TestCheckoutWithAgentAndLogin - Verify that a user is able to select a plan, checkout, select an agent and login to Agency Central
-- [ ] TestSaveApplicationandLogout - Verify that a user is able to go through the process of selecting a plan, checking out, logging in to Agency Central and Saving the application that they just started and Logout
+- [x] TestSaveApplicationandLogout - Verify that a user is able to go through the process of selecting a plan, checking out, logging in to Agency Central and Saving the application that they just started and Logout
 - [ ] TestSaveComparison - Verify that a user is able to select 2 plans to compare and then login to Agency Central and Save
 - [ ] TestSaveQuote - Verify that a user is able to select a plan, login and save that quote
 - [ ] TestUserRegistration - Verify that a user is able to select a plan and then register on Agency Central as a new user

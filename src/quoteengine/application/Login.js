@@ -4,6 +4,7 @@
 
 	function Login(control) {
 		control = control || $('.modal-dialog')
+        
 		var self = this
 
 
@@ -45,7 +46,7 @@
 		}
 
 		self.loginCustom = function (user, pass) {
-			startLogin()
+			return startLogin()
 				.then(controls.username.clear)
 				.then(function () {
 					return controls.username.sendKeys(user)
@@ -55,7 +56,7 @@
 					return controls.password.sendKeys(pass)
 				})
 				.then(controls.login.click)
-				.sleep(4000)
+				.sleep(10000)
 		}
 
 		self.registerCustom = function (user, pass, email, fname, lname, phone) {
@@ -84,7 +85,7 @@
 					return controls.phone.sendKeys(phone)
 				})
 				.then(controls.register.click)
-				.sleep(6000)
+				.sleep(10000)
 		}
 
 		self.login = function () {

@@ -2,8 +2,6 @@
 	
 	module.exports = Cart
 
-	var Login = require('./Login')
-	
 	// This class is used for planInfo modal, compare page, and cart page.
 	function Cart(control, planVariable) {
 		control = control || $('[ui-view=quoteEngine]')
@@ -18,10 +16,6 @@
 			checkout: control.$('[ng-click^=goToNext]'),
 			agents: element.all(by.repeater('agent in agents'))
 		}
-		
-		var login = new Login()
-		self.login = login.login;
-		self.register = login.register;
 		
 		self.agents = function () {
 			return Promise.resolve(controls.agents.map(function (control) {
