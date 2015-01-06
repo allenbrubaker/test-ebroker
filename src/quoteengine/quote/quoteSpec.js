@@ -2,7 +2,7 @@ var Quote = require('./Quote')
 var Application = require('../application/Application')
 
 
-describe('quote:', function () {
+describe.only('quote:', function () {
 
     this.timeout(99999)
 
@@ -14,6 +14,10 @@ describe('quote:', function () {
         quote.load()
     })
 
+    beforeEach(function() {
+        quote.removePopups() // Remove popups that occlude controls and result in failing tests.
+    })
+    
     describe('filters:', function () {
 
         it('all plans shown contain premiums at most max premium', function () {

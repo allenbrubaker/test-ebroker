@@ -19,7 +19,8 @@
             plans: element.all(by.repeater('plan in plans')),
             filter: $('[ng-controller = filterController]'),
             comparePlans: $('[ui-sref^="quote.compare"]'),
-            dependentsModal: $('.modal-dialog')
+            dependentsModal: $('.modal-dialog'),
+            popup: $('.info-pop:not(.ng-hide) .fa-times')
         }
 
         self.plans = function () {
@@ -29,20 +30,20 @@
             return Promise.resolve(plans)
         }
 
-        self.selectFirstPlan = function() {
+        self.selectFirstPlan = function () {
             return self.plans
                 .first()
                 .call('select')
         }
-        
-        self.checkout = function() {
+
+        self.checkout = function () {
             return Promise.resolve(self.filter.expandPlanTypeFilter())
                 .then(self.filter.clickMarketplacePlans)
                 .then(self.selectFirstPlan)
                 .then(self.cart.checkout)
                 .then(self.cart.selectFirstAgent)
         }
-        
+
         self.filter = new Filter(controls.filter)
         self.cart = new Cart()
         self.compare = new Cart(null, 'compare')
@@ -53,8 +54,8 @@
         self.dependents = new Dependents(controls.dependentsModal)
 
         self.load = function () {
-			browser.ignoreSynchronization = true
-			browser.driver.manage().window().maximize() // needed for sliders to function correctly.
+            browser.ignoreSynchronization = true
+            browser.driver.manage().window().maximize() // needed for sliders to function correctly.
             return Home.login().then(controls.modalClose.click).sleep(5000)
         }
 
@@ -121,6 +122,14 @@
 
         self.clickComparePlans = function () {
             return controls.comparePlans.click().sleep(4000)
+        }
+
+        self.removePopups = function () {
+            return controls.popup.isPresent().then(function (isPresent) {
+                if (isPresent)
+                    return controls.popup.click()
+                return true;
+            })
         }
 
     }
