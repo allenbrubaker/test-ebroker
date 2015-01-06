@@ -12,13 +12,13 @@
 		var self = this
 
 		var controls = { 
-			names: control.all(by.binding(planVariable + '.display_name')),
-			premiums: control.all(by.binding(planVariable + '.premium')),
-			back: control.$('[ng-click^=goToQuote]'),
-			close: control.$('[ng-click^=ok]'),
-			checkout: control.$('[ng-click^=goToNext]'),
+			names: element.all(by.binding(planVariable + '.display_name')),
+			premiums: element.all(by.binding(planVariable + '.premium')),
+			back: $('.fa-arrow-left'),
+			close: $('[ng-click^=ok]'),
+			checkout: $('[ng-click^=goToNext]'),
 			agents: $((type.match(/compare/i) ? '.modal-body' : '[ng-show^="modalActive === undefined"]')).all(by.repeater('agent in agents')),
-            save: control.$('.fa-save')
+            save: $('.fa-save')
 		}
 		
 		self.agents = function () {
