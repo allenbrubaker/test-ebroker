@@ -20,7 +20,7 @@
             filter: $('[ng-controller = filterController]'),
             comparePlans: $('[ui-sref^="quote.compare"]'),
             dependentsModal: $('.modal-dialog'),
-            popup: $('.info-pop:not(.ng-hide) .fa-times')
+            popup: $('.info-pop:not(.ng-hide) [ng-click^="infoPopMethods.close"]')
         }
 
         self.plans = function () {
