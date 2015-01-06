@@ -43,7 +43,7 @@
 
         self.saveComparison = function (name) {
             name = name || 'Comparison'
-            return controls.comparisonName.sendKeys(name).then(controls.saveComparison.click).sleep(8000)
+            return controls.comparisonName.sendKeys(name).then(controls.saveComparison.click).sleep(6000)
         }
     }
 
@@ -54,7 +54,7 @@
         }
 
         self.open = function () {
-            return controls.viewCurrentComparison.click().sleep(10000)
+            return controls.viewCurrentComparison.getAttribute('href').then(function(link) { return browser.get(link)}).sleep(10000) // resist clicking button because it opens new browser window.
         }
     }
 })()
