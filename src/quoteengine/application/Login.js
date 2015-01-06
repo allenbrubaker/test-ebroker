@@ -3,14 +3,12 @@
 	module.exports = Login
 
 	function Login(control) {
-		control = control || $('.modal-dialog')
         
 		var self = this
 
-
 		var controls = {
-			startLogin: control.$('.fa-sign-in'),
-			startRegister: control.$('.fa-star'),
+			startLogin: $('.fa-sign-in'),
+			startRegister: $('.fa-star'),
 			username: loginInput('username'),
 			password: loginInput('password'),
 			createUsername: createInput('username'),
@@ -20,23 +18,23 @@
 			firstName: createInput('fname'),
 			lastName: createInput('lname'),
 			phone: createInput('pnumber'),
-			register: control.element(by.cssContainingText('button', 'Create Account')),
-			login: control.element(by.cssContainingText('.btn-success', 'Login')),
-			back: control.$('fa-arrow-left'),
-			loginAnotherUser: control.element(by.cssContainingText('button', 'Log in as another user'))
+			register: element(by.cssContainingText('button', 'Create Account')),
+			login: element(by.cssContainingText('.btn-success', 'Login')),
+			back: $('fa-arrow-left'),
+			loginAnotherUser: element(by.cssContainingText('button', 'Log in as another user'))
 		}
 
 		var constants = {
-			username: 'QATest3',
+			username: 'QATest1',
 			password: 'Test1234'
 		}
 
 		function loginInput(property) {
-			return control.element(by.model('loginForm.' + property));
+			return element(by.model('loginForm.' + property));
 		}
 
 		function createInput(property) {
-			return control.element(by.model('createForm.' + property));
+			return element(by.model('createForm.' + property));
 		}
 
 		function startLogin() {

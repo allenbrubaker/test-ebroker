@@ -3,18 +3,22 @@
 	module.exports = Cart
 
 	// This class is used for planInfo modal, compare page, and cart page.
-	function Cart(control, planVariable) {
-		control = control || $('[ui-view=quoteEngine]')
-		planVariable = planVariable || 'medicalPlan';
+    // type = 'compare' | 'cart' | 'info'
+	function Cart(control, type) {
+        
+        var control = control || $('[ui-view=quoteEngine]')
+        var type = type || 'cart'
+        var planVariable = type.match(/compare/i) || type.match(/info/i) ? 'plan' : 'medicalPlan'
 		var self = this
 
-		var controls = {
+		var controls = { 
 			names: control.all(by.binding(planVariable + '.display_name')),
 			premiums: control.all(by.binding(planVariable + '.premium')),
 			back: control.$('[ng-click^=goToQuote]'),
 			close: control.$('[ng-click^=ok]'),
 			checkout: control.$('[ng-click^=goToNext]'),
-			agents: element.all(by.repeater('agent in agents'))
+			agents: $((type.match(/compare/i) ? '.modal-body' : '[ng-show^="modalActive === undefined"]')).all(by.repeater('agent in agents')),
+            save: control.$('.fa-save')
 		}
 		
 		self.agents = function () {
@@ -22,7 +26,13 @@
 				return new Agent(control)
 			}))
 		}
-
+        
+        self.selectFirstAgent = function() {
+            return self.agents()
+                .first()
+                .call('select')
+        }
+        
 		self.premiums = function () {
 			return Promise.resolve(controls.premiums
 				.map(function (control) {
@@ -47,12 +57,16 @@
 		}
 
 		self.clickBack = function () {
-			return scrollDown().then(controls.back.click)
+			return controls.back.click()
 		}
 
 		self.clickClose = function () {
 			return controls.close.click()
 		}
+        
+        self.save = function() {
+            controls.save.click().sleep(5000)
+        }
 
 		self.checkout = function () {
 			return scrollDown() // popup sometimes shows up hiding the checkout button.
@@ -68,10 +82,10 @@
 	function Agent(control) {
 		var self = this
 		var controls = {
-			select: control.$('p')
+			select: control.$('.btn')
 		}
 		self.select = function () {
-			return controls.select.click().sleep(14000)
+			return controls.select.click().sleep(10000)
 		}
 	}
 })()

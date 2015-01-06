@@ -2,21 +2,6 @@ var Quote = require('./Quote')
 var Application = require('../application/Application')
 
 
-//describe('application:', function () {
-//	this.timeout(99999)
-//
-//	var quote;
-//	before(function () {
-//		quote = new Quote()
-//		//quote.load()
-//		return browser.get('https://testapplication.ioixsoftware.com/account#!/applications').sleep(3000)
-//	})
-//
-//	it.only('login', function () {
-//		return quote.cart.login()
-//	})
-//})
-
 describe('quote:', function () {
 
     this.timeout(99999)
@@ -325,6 +310,35 @@ describe('quote:', function () {
                     return contains.should.be.true
                 })
                 .then(quote.load)
+        })
+
+        xit('save plan comparison in agency central', function () {
+            quote.plans().take(2).map(function (p) {
+                return p.clickCompare().then(function () {
+                    return Promise.props({
+                        name: p.name(),
+                        premium: p.premium()
+                    })
+                })
+            })
+                .then(function (plans) {
+                    return quote.clickComparePlans()
+                        .then(quote.compare.save)
+                        .then(quote.compare.selectFirstAgent)
+                        .then(app.login)
+                        .then(app.saveComparison)
+                        .then(app.openFirstComparison)
+                        .then(function () {
+                            return plans.every(function (plan) {
+                                return quote.compare.containsPlan(plan.name, plan.premium)
+                            })
+                        })
+                })
+                .then(function (contains) {
+                    return contains.should.be.true
+                })
+                .then(quote.compare.clickBack)
+
         })
     })
 

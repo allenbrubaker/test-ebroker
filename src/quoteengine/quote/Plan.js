@@ -67,5 +67,5 @@ function Plan(control) {
             return controls.planInfo.click().sleep(4000)
         }
 
-        self.planInfo = new Cart(controls.modal, 'plan')
+        self.planInfo = new Cart(controls.modal, 'info')
     }

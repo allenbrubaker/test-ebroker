@@ -9,7 +9,10 @@
         var controls = {
             saveMenu: $('.fa-cog'),
             saveApplicationAndLogout: $('[ng-click^="saveApplication(true, true)"]'),
-            savedApplications: $$('[ng-repeat^="application in applications"]')
+            savedApplications: $$('[ng-repeat^="application in applications"]'),
+            comparisonName: $('.modal-dialog [ng-model^=comparisonName]'),
+            saveComparison: $('.modal-dialog .btn-success'),
+            comparisons: $$('[ng-repeat^="compare in comparisons"]'),
         }
 
         self.saveApplicationAndLogout = function () {
@@ -26,6 +29,32 @@
                 var dd = d.getDate() + ', ' + d.getFullYear()
                 return new RegExp(dd).exec(text) != null
             })
+        }
+
+        self.comparisons = function () {
+            return Promise.resolve(controls.comparisons.map(function (c) {
+                return new Comparison(c)
+            }))
+        }
+
+        self.openFirstComparison = function () {
+            return self.comparisons().first().call('open')
+        }
+
+        self.saveComparison = function (name) {
+            name = name || 'Comparison'
+            return controls.comparisonName.sendKeys(name).then(controls.saveComparison.click).sleep(8000)
+        }
+    }
+
+    function Comparison(control) {
+        var self = this;
+        var controls = {
+            viewCurrentComparison: control.$('.btn-success')
+        }
+
+        self.open = function () {
+            return controls.viewCurrentComparison.click().sleep(10000)
         }
     }
 })()

@@ -29,21 +29,24 @@
             return Promise.resolve(plans)
         }
 
-        self.checkout = function() {
-            return Promise.resolve(self.filter.expandPlanTypeFilter())
-                .then(self.filter.clickMarketplacePlans)
-                .then(self.plans)
-                .first()
-                .call('select')
-                .then(self.cart.checkout)
-                .then(self.cart.agents)
+        self.selectFirstPlan = function() {
+            return self.plans
                 .first()
                 .call('select')
         }
         
+        self.checkout = function() {
+            return Promise.resolve(self.filter.expandPlanTypeFilter())
+                .then(self.filter.clickMarketplacePlans)
+                .then(self.selectFirstPlan)
+                .then(self.cart.checkout)
+                .then(self.cart.selectFirstAgent)
+        }
+        
         self.filter = new Filter(controls.filter)
         self.cart = new Cart()
-        self.compare = new Cart(null, 'plan')
+        self.compare = new Cart(null, 'compare')
+        self.savedCompare = new Cart(null, 'savedCompare')
         self.sort = new Sort()
         self.taxCredit = new TaxCredit()
         self.location = new Location()
