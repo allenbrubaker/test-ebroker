@@ -146,13 +146,13 @@ describe('quote:', function () {
 
         it('clicking compare checkbox on each displays details for each selected plan on compare page', function () {
             return quote.plans().take(2).map(function (p) {
-                return p.clickCompare().then(function () {
-                    return Promise.props({
-                        name: p.name(),
-                        premium: p.premium()
+                    return p.clickCompare().then(function () {
+                        return Promise.props({
+                            name: p.name(),
+                            premium: p.premium()
+                        })
                     })
                 })
-            })
                 .then(function (plans) {
                     return quote.clickComparePlans()
                         .then(function () {
@@ -318,13 +318,13 @@ describe('quote:', function () {
 
         it('save plan comparison in agency central', function () {
             return quote.plans().take(2).map(function (p) {
-                return p.clickCompare().then(function () {
-                    return Promise.props({
-                        name: p.name(),
-                        premium: p.premium()
+                    return p.clickCompare().then(function () {
+                        return Promise.props({
+                            name: p.name(),
+                            premium: p.premium()
+                        })
                     })
                 })
-            })
                 .then(function (plans) {
                     return quote.clickComparePlans()
                         .then(quote.compare.save)
@@ -345,10 +345,14 @@ describe('quote:', function () {
 
         })
 
-        xit('save plan quote in agency central', function () {
-            return quote.plans().first().then(function (plan) {
-                return [plan.name(), plan.premium()]
-            })
+        it.only('save plan quote in agency central', function () {
+            return Promise.resolve(quote.filter.expandPlanTypeFilter())
+                .then(quote.filter.clickMarketplacePlans)
+                .then(quote.plans)
+                .first()
+                .then(function (plan) {
+                    return [plan.name(), plan.premium()]
+                })
                 .all()
                 .spread(function (name, premium) {
                     return quote.selectFirstPlan()
@@ -357,9 +361,9 @@ describe('quote:', function () {
                         .then(app.login)
                         .then(app.saveQuote)
                         .then(app.quotes)
-                        .first()
-                        .then(function (quote) {
-                            return quote.isContainPlan(name, premium)
+                        .last()
+                        .then(function (q) {
+                            return q.isContainPlan(name, premium)
                         })
                         .should.eventually.be.true
                 })

@@ -77,15 +77,15 @@
             plans: control.$('.dropdown')
         }
 
-        var isContainPlan = function (name, premium) {
-            controls.plans.getText().then(function (text) {
+        self.isContainPlan = function (name, premium) {
+            return controls.plans.click().then(controls.plans.getText).then(function (text) {
                 return RegExp(escapeRegex(name), 'i').exec(text) != null 
                 && RegExp(escapeRegex(premium), 'i').exec(text) != null
             })
         }
 
         function escapeRegex(str) {
-            return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+            return str.toString().replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
         }
     }
 })()
