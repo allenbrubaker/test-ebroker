@@ -16,6 +16,7 @@ describe('quote:', function () {
     beforeEach(function () {
         quote.removePopups() // Remove popups that occlude controls and result in failing tests.
         quote.scrollUp()
+
     })
 
     describe('filters:', function () {
@@ -140,7 +141,8 @@ describe('quote:', function () {
                 return plan.showPlanInfo()
                     .then(function () {
                         return plan.planInfo.containsPlan(name, premium).should.eventually.be.true
-                    }).then(plan.planInfo.clickClose)
+                    })
+                    .then(plan.planInfo.clickClose)
             })
         })
 
@@ -153,6 +155,7 @@ describe('quote:', function () {
                         })
                     })
                 })
+                .then(quote.removePopups)
                 .then(function (plans) {
                     return quote.clickComparePlans()
                         .then(function () {
@@ -161,9 +164,11 @@ describe('quote:', function () {
                             })
                         })
                 })
+                .then(quote.removePopups)
                 .then(function (contains) {
                     return contains.should.be.true
                 })
+                .then(quote.removePopups)
                 .then(quote.compare.clickBack)
         })
 
@@ -369,8 +374,8 @@ describe('quote:', function () {
                         .should.eventually.be.true
                 })
         })
-        
-        it('checkout and register new user successfully', function() {
+
+        it('checkout and register new user successfully', function () {
             return quote.checkout().then(app.register)
         })
 

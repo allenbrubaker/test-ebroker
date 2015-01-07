@@ -78,7 +78,7 @@
         function scrollDown() {
             return browser.executeScript("scroll(0, 250);");
         }
-
+        
     }
 
     function Agent(control) {

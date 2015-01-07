@@ -134,7 +134,6 @@
         self.scrollUp = function () {
             return browser.executeScript("scroll(0, 0);");
         }
-
     }
 
 })()
