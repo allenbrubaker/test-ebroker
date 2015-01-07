@@ -345,7 +345,7 @@ describe('quote:', function () {
 
         })
 
-        it.only('save plan quote in agency central', function () {
+        it('save plan quote in agency central', function () {
             return Promise.resolve(quote.filter.expandPlanTypeFilter())
                 .then(quote.filter.clickMarketplacePlans)
                 .then(quote.plans)
@@ -367,6 +367,10 @@ describe('quote:', function () {
                         })
                         .should.eventually.be.true
                 })
+        })
+        
+        it('checkout and register new user successfully', function() {
+            return quote.checkout().then(app.register)
         })
 
 

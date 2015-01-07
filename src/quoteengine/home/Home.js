@@ -32,7 +32,7 @@
         .then(function () { return home.location.enterZip(zip) })
         .then(function() { return home.dependents.addSelf(true, '07/06/1986', false) })
         .then(home.quote)
-		.sleep(5000)
+		.sleep(7000)
     }
 
 })();

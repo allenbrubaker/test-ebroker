@@ -13,7 +13,7 @@
 			password: loginInput('password'),
 			createUsername: createInput('username'),
 			createPassword: createInput('password'),
-			retypePassowrd: createInput('retypePassword'),
+			retypePassword: createInput('retypePassword'),
 			email: createInput('email'),
 			firstName: createInput('fname'),
 			lastName: createInput('lname'),
@@ -58,14 +58,14 @@
 		}
 
 		self.registerCustom = function (user, pass, email, fname, lname, phone) {
-			return controls.startRegister.click()
-				.then(controls.username.clear)
+			return controls.startRegister.click().sleep(1000)
+				.then(controls.createUsername.clear)
 				.then(function () {
-					return controls.username.sendKeys(user)
+					return controls.createUsername.sendKeys(user)
 				})
-				.then(controls.password.clear)
+				.then(controls.createPassword.clear)
 				.then(function () {
-					return controls.password.sendKeys(pass)
+					return controls.createPassword.sendKeys(pass)
 				})
 				.then(function () {
 					return controls.retypePassword.sendKeys(pass)
@@ -74,10 +74,10 @@
 					return controls.email.sendKeys(email)
 				})
 				.then(function () {
-					return controls.fname.sendKeys(fname)
+					return controls.firstName.sendKeys(fname)
 				})
 				.then(function () {
-					return controls.lname.sendKeys(lname)
+					return controls.lastName.sendKeys(lname)
 				})
 				.then(function () {
 					return controls.phone.sendKeys(phone)
@@ -93,10 +93,10 @@
 		self.register = function () {
 			var user = ''
 			for (var i = 0; i < 6; ++i) {
-				user += (i == 0 ? 'A' : 'a') + Math.round(Math.random() * 26)
+				user += String.fromCharCode((i == 0 ? 'A' : 'a').charCodeAt() + Math.round(Math.random() * 26))
 			}
 			user += '1'
-			return self.register(user, 'Password1', 'user@test.com', 'test', 'user', '1234567890')
+			return self.registerCustom(user, 'Password1', 'user@test.com', 'test', 'user', '1234567890')
 		}
 	}
 })()

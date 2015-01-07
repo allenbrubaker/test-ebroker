@@ -85,7 +85,7 @@
 			select: control.$('.btn')
 		}
 		self.select = function () {
-			return controls.select.click().sleep(10000)
+			return controls.select.click().sleep(12000)
 		}
 	}
 })()
