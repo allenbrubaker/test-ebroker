@@ -33,7 +33,7 @@
         self.selectFirstPlan = function () {
             return Promise.resolve(self.filter.expandPlanTypeFilter())
                 .then(self.filter.clickMarketplacePlans)
-                .then(function() { return self.plans }
+                .then(self.plans)
                 .first()
                 .call('select')
         }

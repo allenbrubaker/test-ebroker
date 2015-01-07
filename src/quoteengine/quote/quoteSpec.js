@@ -21,7 +21,7 @@ describe('quote:', function () {
     describe('filters:', function () {
 
         it('all plans shown contain premiums at most max premium', function () {
-            quote.filter.expandPriceFilter()
+            return quote.filter.expandPriceFilter()
                 .then(function () {
                     return quote.filter.movePremiumSlider(-20)
                 })
@@ -34,7 +34,7 @@ describe('quote:', function () {
         })
 
         it('all plans shown contain deductibles at most max deductible', function () {
-            quote.filter.expandPriceFilter()
+            return quote.filter.expandPriceFilter()
                 .then(function () {
                     return quote.filter.moveDeductibleSlider(-30)
                 })
@@ -47,7 +47,7 @@ describe('quote:', function () {
         })
 
         it('carriers filter functions correctly', function () {
-            quote.filter.expandCarrierFilter().then(function () {
+            return quote.filter.expandCarrierFilter().then(function () {
                 return quote.filter.clickCarrier(/healthamericaone/i).then(quote.filter.minimizeCarrierFilter)
             }).then(function () {
                 return quote.allCarriersNotDisplaying('healthamericaone').should.eventually.be.true
@@ -55,7 +55,7 @@ describe('quote:', function () {
         })
 
         it('shows only HSA eligible on filter', function () {
-            quote.filter.expandPlanTypeFilter()
+            return quote.filter.expandPlanTypeFilter()
                 .then(quote.filter.clickShowOnlyHsa)
                 .then(function () {
                     return quote.allHsaEligible().should.eventually.be.true
@@ -64,7 +64,7 @@ describe('quote:', function () {
         })
 
         it('metalType filter functions correctly', function () {
-            quote.filter.expandMetalTypeFilter().then(function () {
+            return quote.filter.expandMetalTypeFilter().then(function () {
                 return quote.filter.clickMetalType(/bronze/i)
             }).then(function () {
                 return quote.allMetalTypesNotDisplaying('bronze').should.eventually.be.true
@@ -72,7 +72,7 @@ describe('quote:', function () {
         })
 
         it('disclaimer visible on expanding disclaimer pane', function () {
-            quote.filter.expandDisclaimer()
+            return quote.filter.expandDisclaimer()
                 .then(quote.filter.disclaimerText)
                 .then(function (disclaimer) {
                     var match = disclaimer.match(/In offering this website, eBroker is required to comply with all applicable federal laws/i)
@@ -82,7 +82,7 @@ describe('quote:', function () {
         })
 
         it('metal levels info visible on expanding metal info pane', function () {
-            quote.filter.expandMetalTypeInfo()
+            return quote.filter.expandMetalTypeInfo()
                 .then(quote.filter.metalTypeInfoText)
                 .then(function (info) {
                     var match = info.match(/platinum/i) != null && info.match(/gold/i) != null && info.match(/silver/i) != null && info.match(/bronze/i) != null
@@ -95,13 +95,13 @@ describe('quote:', function () {
 
     describe('plan:', function () {
         it('ability to select more info button', function () {
-            quote.plans().first().call('showMore')
+            return quote.plans().first().call('showMore')
         })
     })
 
     describe("sort:", function () {
         it('displays premium in descending order', function () {
-            quote.sort.sortPremium(false).then(function () {
+            return quote.sort.sortPremium(false).then(function () {
                 return quote.isSorted(function (plan) {
                     return plan.premium()
                 }, false).should.eventually.be.true
@@ -109,21 +109,21 @@ describe('quote:', function () {
         })
 
         it('displays premium in ascending order', function () {
-            quote.sort.sortPremium(true).then(function () {
+            return quote.sort.sortPremium(true).then(function () {
                 return quote.isSorted(function (plan) {
                     return plan.premium()
                 }, true).should.eventually.be.true
             })
         })
         it('displays deductible in descending order', function () {
-            quote.sort.sortDeductible(false).then(function () {
+            return quote.sort.sortDeductible(false).then(function () {
                 return quote.isSorted(function (plan) {
                     return plan.deductible()
                 }, false).should.eventually.be.true
             })
         })
         it('displays deductible in ascending order', function () {
-            quote.sort.sortDeductible(true).then(function () {
+            return quote.sort.sortDeductible(true).then(function () {
                 return quote.isSorted(function (plan) {
                     return plan.deductible()
                 }, true).should.eventually.be.true
@@ -134,7 +134,7 @@ describe('quote:', function () {
     describe('cart:', function () {
 
         it('clicking plan info shows plan detail modal with correct data', function () {
-            quote.plans().spread(function (plan) {
+            return quote.plans().spread(function (plan) {
                 return Promise.all([plan, plan.name(), plan.premium()])
             }).spread(function (plan, name, premium) {
                 return plan.showPlanInfo()
@@ -145,7 +145,7 @@ describe('quote:', function () {
         })
 
         it('clicking compare checkbox on each displays details for each selected plan on compare page', function () {
-            quote.plans().take(2).map(function (p) {
+            return quote.plans().take(2).map(function (p) {
                 return p.clickCompare().then(function () {
                     return Promise.props({
                         name: p.name(),
@@ -168,7 +168,7 @@ describe('quote:', function () {
         })
 
         it('selecting a plan navigates to cart, which contains the plan.', function () {
-            Promise.resolve(quote.filter.expandPlanTypeFilter())
+            return Promise.resolve(quote.filter.expandPlanTypeFilter())
                 .then(quote.filter.clickMarketplacePlans)
                 .then(quote.plans)
                 .spread(function (plan) {
@@ -191,11 +191,11 @@ describe('quote:', function () {
 
     describe("tax credit:", function () {
         it('should follow all the steps and display a tax credit of $28.67.', function () {
-            quote.taxCredit.computeTaxCredit()
+            return quote.taxCredit.computeTaxCredit()
         })
 
         it('should check all the premiums to ensure the taxcredit was applied correctly', function () {
-            quote.taxCredit.isCorrectPremium()
+            return quote.taxCredit.isCorrectPremium()
         })
     })
 
@@ -299,13 +299,13 @@ describe('quote:', function () {
 
     describe('integration:', function () {
         it('checkout plan with an agent and login into agency central', function () {
-            quote.checkout()
+            return quote.checkout()
                 .then(app.login)
                 .then(quote.load)
         })
 
         it('checkout plan with an agent can be saved in agency central', function () {
-            quote.checkout()
+            return quote.checkout()
                 .then(app.login)
                 .then(app.saveApplicationAndLogout)
                 .then(app.login)
@@ -317,7 +317,7 @@ describe('quote:', function () {
         })
 
         it('save plan comparison in agency central', function () {
-            quote.plans().take(2).map(function (p) {
+            return quote.plans().take(2).map(function (p) {
                 return p.clickCompare().then(function () {
                     return Promise.props({
                         name: p.name(),
@@ -344,16 +344,28 @@ describe('quote:', function () {
                 .then(quote.compare.clickBack)
 
         })
-        
-//        it('save plan quote in agency central', function() {
-//            quote.selectFirstPlan()
-//            .then(quote.cart.save)
-//            .then(quote.cart.selectFirstAgent)
-//            .then(app.login)
-//            
-//        })
-        
-        
+
+        xit('save plan quote in agency central', function () {
+            return quote.plans().first().then(function (plan) {
+                return [plan.name(), plan.premium()]
+            })
+                .all()
+                .spread(function (name, premium) {
+                    return quote.selectFirstPlan()
+                        .then(quote.cart.save)
+                        .then(quote.compare.selectFirstAgent) // use compare because agents show up as a modal.
+                        .then(app.login)
+                        .then(app.saveQuote)
+                        .then(app.quotes)
+                        .first()
+                        .then(function (quote) {
+                            return quote.isContainPlan(name, premium)
+                        })
+                        .should.eventually.be.true
+                })
+        })
+
+
     })
 
 })

@@ -11,8 +11,9 @@
             saveApplicationAndLogout: $('[ng-click^="saveApplication(true, true)"]'),
             savedApplications: $$('[ng-repeat^="application in applications"]'),
             comparisonName: $('.modal-dialog [ng-model^=comparisonName]'),
-            saveComparison: $('.modal-dialog .btn-success'),
+            saveDialog: $('.modal-dialog .btn-success'),
             comparisons: $$('[ng-repeat^="compare in comparisons"]'),
+            quotes: $$('[ng-repeat^="quote in quotes"]')
         }
 
         self.saveApplicationAndLogout = function () {
@@ -37,24 +38,54 @@
             }))
         }
 
+        self.quotes = function () {
+            return Promise.resolve(controls.quotes.map(function (q) {
+                return new Quote(q)
+            }))
+        }
+
         self.openFirstComparison = function () {
             return self.comparisons().first().call('open')
         }
 
         self.saveComparison = function (name) {
             name = name || 'Comparison'
-            return controls.comparisonName.sendKeys(name).then(controls.saveComparison.click).sleep(6000)
+            return controls.comparisonName.sendKeys(name).then(controls.saveDialog.click).sleep(6000)
+        }
+
+        self.saveQuote = function () {
+            return controls.saveDialog.click().sleep(8000) //4000
         }
     }
 
     function Comparison(control) {
-        var self = this;
+        var self = this
         var controls = {
             viewCurrentComparison: control.$('.btn-success')
         }
 
         self.open = function () {
-            return controls.viewCurrentComparison.getAttribute('href').then(function(link) { return browser.get(link)}).sleep(10000) // resist clicking button because it opens new browser window.
+            return controls.viewCurrentComparison.getAttribute('href').then(function (link) {
+                    return browser.get(link)
+                }).sleep(10000) // resist clicking button because it opens new browser window.
+        }
+    }
+
+    function Quote(control) {
+        var self = this
+        var controls = {
+            plans: control.$('.dropdown')
+        }
+
+        var isContainPlan = function (name, premium) {
+            controls.plans.getText().then(function (text) {
+                return RegExp(escapeRegex(name), 'i').exec(text) != null 
+                && RegExp(escapeRegex(premium), 'i').exec(text) != null
+            })
+        }
+
+        function escapeRegex(str) {
+            return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
         }
     }
 })()

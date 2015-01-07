@@ -65,7 +65,7 @@
 		}
         
         self.save = function() {
-            controls.save.click().sleep(5000)
+            return controls.save.click().sleep(5000)
         }
 
 		self.checkout = function () {
