@@ -316,7 +316,7 @@ describe('quote:', function () {
                 .then(quote.load)
         })
 
-        it.only('save plan comparison in agency central', function () {
+        it('save plan comparison in agency central', function () {
             quote.plans().take(2).map(function (p) {
                 return p.clickCompare().then(function () {
                     return Promise.props({
