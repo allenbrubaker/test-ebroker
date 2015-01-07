@@ -43,7 +43,7 @@
                 .then(self.cart.checkout)
                 .then(self.cart.selectFirstAgent)
         }
-            
+
         self.filter = new Filter(controls.filter)
         self.cart = new Cart()
         self.compare = new Cart(null, 'compare')
@@ -129,6 +129,10 @@
                     return controls.popup.click()
                 return true;
             })
+        }
+
+        self.scrollUp = function () {
+            return browser.executeScript("scroll(0, 0);");
         }
 
     }

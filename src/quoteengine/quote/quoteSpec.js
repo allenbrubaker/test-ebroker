@@ -1,8 +1,7 @@
 var Quote = require('./Quote')
 var Application = require('../application/Application')
 
-
-describe('quote:', function () {
+describe.only('quote:', function () {
 
     this.timeout(99999)
 
@@ -16,6 +15,7 @@ describe('quote:', function () {
 
     beforeEach(function () {
         quote.removePopups() // Remove popups that occlude controls and result in failing tests.
+        quote.scrollUp()
     })
 
     describe('filters:', function () {
@@ -297,7 +297,8 @@ describe('quote:', function () {
 
     })
 
-    describe('integration:', function () {
+    // The following tests are disabled because no process is in place to properly sandbox agency central for mock testing.
+    xdescribe('integration:', function () {
         it('checkout plan with an agent and login into agency central', function () {
             return quote.checkout()
                 .then(app.login)

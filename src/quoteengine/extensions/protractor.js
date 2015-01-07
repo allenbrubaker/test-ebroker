@@ -5,11 +5,15 @@ proto.sleep = function (ms) {
 }
 
 proto.isDisabled = function () {
-    return this.getAttribute('disabled').then(function(x) { return x === 'true'; });
+    return this.getAttribute('disabled').then(function (x) {
+        return x === 'true';
+    });
 }
 
 proto.isEnabled = function () {
-    return this.isDisabled().then(function(d) { return !d; });
+    return this.isDisabled().then(function (d) {
+        return !d;
+    });
 }
 
 Promise.prototype.zip = function (array2) {
