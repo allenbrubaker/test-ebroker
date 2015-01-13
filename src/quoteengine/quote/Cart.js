@@ -14,7 +14,7 @@
         var controls = {
             names: control.all(by.binding(planVariable + '.display_name')),
             premiums: control.all(by.binding(planVariable + '.premium')),
-            back: control.$('.fa-arrow-left'),
+            back: control.$('button[ng-click^=goToQuote]'),
             close: control.$('[ng-click^=ok]'),
             checkout: control.$('[ng-click^=goToNext]'),
             agents: $((type.match(/compare/i) ? '.modal-body' : '[ng-show^="modalActive === undefined"]')).all(by.repeater('agent in agents')),
@@ -57,11 +57,11 @@
         }
 
         self.clickBack = function () {
-            return controls.back.click()
+            return controls.back.click().sleep(2000)
         }
 
         self.clickClose = function () {
-            return controls.close.click()
+            return controls.close.click().sleep(2000)
         }
 
         self.save = function () {

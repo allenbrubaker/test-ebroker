@@ -14,8 +14,7 @@ describe('quote:', function () {
     })
 
     beforeEach(function () {
-        quote.removePopups() // Remove popups that occlude controls and result in failing tests.
-        quote.scrollUp()
+        return quote.removePopups().then(quote.scrollUp)
 
     })
 
@@ -155,7 +154,6 @@ describe('quote:', function () {
                         })
                     })
                 })
-                .then(quote.removePopups)
                 .then(function (plans) {
                     return quote.clickComparePlans()
                         .then(function () {
@@ -164,11 +162,9 @@ describe('quote:', function () {
                             })
                         })
                 })
-                .then(quote.removePopups)
                 .then(function (contains) {
                     return contains.should.be.true
                 })
-                .then(quote.removePopups)
                 .then(quote.compare.clickBack)
         })
 

@@ -120,7 +120,7 @@
         }
 
         self.clickComparePlans = function () {
-            return controls.comparePlans.click().sleep(4000)
+            return controls.comparePlans.click().sleep(5000)
         }
 
         self.removePopups = function () {
@@ -132,7 +132,11 @@
         }
 
         self.scrollUp = function () {
-            return browser.executeScript("scroll(0, 0);");
+            return browser.executeScript("scroll(0, 0);")
+        }
+        
+        self.scrollDown = function () {
+            return browser.executeScript("scroll(0, 200);")
         }
     }
 

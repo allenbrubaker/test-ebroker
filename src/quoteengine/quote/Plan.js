@@ -52,7 +52,7 @@ function Plan(control) {
         }
 
         self.clickCompare = function () {
-            return controls.compare.click()
+            return controls.compare.click().sleep(1000)
         }
 
         self.select = function () {
